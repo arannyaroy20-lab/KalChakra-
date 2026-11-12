@@ -1,32 +1,37 @@
-# MultiCal — Bangladesh National Calendar Engine
+# MultiCal — Calendar Engine Modules
 
-A standalone TypeScript implementation of the Bangladesh National Calendar Engine
-for the MultiCal project.
+Standalone TypeScript implementation package for the first two MultiCal calendar engines.
 
-## Install and verify
+## Included engines
+
+- **Bangladesh National Calendar** (`src/engines/bd-national/`): year-wise national event data, event loading, validation, filtering, duplicate detection and source provenance.
+- **Bangladesh Bengali Calendar** (`src/engines/bd-bengali/`): deterministic Gregorian ↔ Bengali date conversion using Bangladesh's revised 2019 Bangla Academy calendar rules.
+
+The Bangladesh Bengali engine is not the West Bengal traditional Panjika engine. The India Bengali and ISKCON Mayapur engines are not included in this package.
+
+## Install, build and test
 
 ```bash
 npm install
 npm run typecheck
 npm test
+npm run build
 ```
 
-## Included
+## Structure
 
-- Shared calendar event types
-- Bangladesh National Calendar engine facade
-- 2026 and 2027 year-wise JSON datasets
-- Event loader, validator, date/category/holiday filters and duplicate detection
-- Bengali and English event names and descriptions
-- Source provenance and verification/date status
-- Node.js built-in test runner
-- Data-source, engine and test documentation
+```text
+src/
+├── core/types/                  # Shared calendar contracts
+└── engines/
+    ├── bd-national/             # Bangladesh national events
+    └── bd-bengali/              # Bangladesh revised Bengali date conversion
 
-## Integration
+tests/calendar/
+├── bd-national/
+└── bd-bengali/
 
-Copy `src/core/types/`, `src/engines/bd-national/`, `tests/calendar/bd-national/`,
-and the relevant `docs/` files into the MultiCal repository. Merge the provided
-`package.json` dev dependencies and TypeScript JSON import settings into the existing
-project rather than replacing its package configuration.
+docs/
+```
 
-This is an implementation package, not a replacement for the full Electron application.
+See `docs/BD_NATIONAL_ENGINE.md`, `docs/BD_BENGALI_ENGINE.md` and `docs/DATA_SOURCES.md` for engine-specific details and source provenance.

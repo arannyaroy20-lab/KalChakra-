@@ -2,15 +2,22 @@
   "project": "MultiCal Bangladesh National Calendar Engine",
   "version": "0.1.0",
   "created": "2026-11-10",
-  "fileCount": 20,
+  "fileCount": 28,
   "files": [
     "IMPLEMENTATION_MANIFEST.json",
     "README.md",
+    "docs/BD_BENGALI_ENGINE.md",
     "docs/BD_NATIONAL_ENGINE.md",
     "docs/DATA_SOURCES.md",
+    "docs/IMPLEMENTATION.md",
     "docs/TEST_REPORT.md",
     "package.json",
     "src/core/types/calendar-event.types.ts",
+    "src/engines/bd-bengali/bd-bengali.calendar.ts",
+    "src/engines/bd-bengali/constants.ts",
+    "src/engines/bd-bengali/date-utils.ts",
+    "src/engines/bd-bengali/index.ts",
+    "src/engines/bd-bengali/types.ts",
     "src/engines/bd-national/bd-national.engine.ts",
     "src/engines/bd-national/data/2026.json",
     "src/engines/bd-national/data/2027.json",
@@ -22,7 +29,36 @@
     "src/engines/bd-national/services/event-loader.ts",
     "src/engines/bd-national/services/event-validator.ts",
     "src/engines/bd-national/types.ts",
+    "tests/calendar/bd-bengali/calendar.test.mjs",
     "tests/calendar/bd-national/engine.test.mjs",
     "tsconfig.json"
-  ]
+  ],
+  "engines": [
+    "bd-national",
+    "bd-bengali"
+  ],
+  "phase4b": {
+    "version": "0.1.0",
+    "createdFiles": [
+      "src/engines/bd-bengali/types.ts",
+      "src/engines/bd-bengali/constants.ts",
+      "src/engines/bd-bengali/date-utils.ts",
+      "src/engines/bd-bengali/bd-bengali.calendar.ts",
+      "src/engines/bd-bengali/index.ts",
+      "tests/calendar/bd-bengali/calendar.test.mjs",
+      "docs/BD_BENGALI_ENGINE.md",
+      "docs/IMPLEMENTATION.md"
+    ],
+    "modifiedFiles": [
+      "package.json",
+      "README.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json"
+    ],
+    "verification": {
+      "typecheck": "passed",
+      "tests": "14 passed, 0 failed",
+      "build": "passed"
+    }
+  }
 }

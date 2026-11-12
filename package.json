@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test tests/calendar/bd-national/*.test.mjs"
+    "test": "npm run build && node --test tests/calendar/*/*.test.mjs"
   },
   "devDependencies": {
     "typescript": "^5.7.3"
