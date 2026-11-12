@@ -1,8 +1,9 @@
 {
-  "project": "MultiCal Bangladesh National Calendar Engine",
+  "project": "MultiCal Calendar Engine Modules",
   "version": "0.1.0",
   "created": "2026-11-10",
-  "fileCount": 28,
+  "updated": "2026-11-12",
+  "fileCount": 39,
   "files": [
     "IMPLEMENTATION_MANIFEST.json",
     "README.md",
@@ -10,6 +11,7 @@
     "docs/BD_NATIONAL_ENGINE.md",
     "docs/DATA_SOURCES.md",
     "docs/IMPLEMENTATION.md",
+    "docs/INDIA_BENGALI_ENGINE.md",
     "docs/TEST_REPORT.md",
     "package.json",
     "src/core/types/calendar-event.types.ts",
@@ -29,36 +31,60 @@
     "src/engines/bd-national/services/event-loader.ts",
     "src/engines/bd-national/services/event-validator.ts",
     "src/engines/bd-national/types.ts",
+    "src/engines/india-bengali/astronomy/meeus.ts",
+    "src/engines/india-bengali/astronomy/panchang.ts",
+    "src/engines/india-bengali/astronomy/sunrise.ts",
+    "src/engines/india-bengali/calendar-conversion.ts",
+    "src/engines/india-bengali/constants.ts",
+    "src/engines/india-bengali/index.ts",
+    "src/engines/india-bengali/india-bengali.engine.ts",
+    "src/engines/india-bengali/services/date-time.ts",
+    "src/engines/india-bengali/types.ts",
     "tests/calendar/bd-bengali/calendar.test.mjs",
     "tests/calendar/bd-national/engine.test.mjs",
+    "tests/calendar/india-bengali/engine.test.mjs",
     "tsconfig.json"
   ],
   "engines": [
     "bd-national",
-    "bd-bengali"
+    "bd-bengali",
+    "india-bengali"
   ],
+  "phase4a": {
+    "status": "preserved",
+    "verification": "included in full-suite tests"
+  },
   "phase4b": {
-    "version": "0.1.0",
+    "status": "preserved",
+    "verification": "included in full-suite tests"
+  },
+  "phase4c": {
+    "status": "implemented",
     "createdFiles": [
-      "src/engines/bd-bengali/types.ts",
-      "src/engines/bd-bengali/constants.ts",
-      "src/engines/bd-bengali/date-utils.ts",
-      "src/engines/bd-bengali/bd-bengali.calendar.ts",
-      "src/engines/bd-bengali/index.ts",
-      "tests/calendar/bd-bengali/calendar.test.mjs",
-      "docs/BD_BENGALI_ENGINE.md",
-      "docs/IMPLEMENTATION.md"
+      "src/engines/india-bengali/types.ts",
+      "src/engines/india-bengali/constants.ts",
+      "src/engines/india-bengali/calendar-conversion.ts",
+      "src/engines/india-bengali/india-bengali.engine.ts",
+      "src/engines/india-bengali/index.ts",
+      "src/engines/india-bengali/astronomy/meeus.ts",
+      "src/engines/india-bengali/astronomy/sunrise.ts",
+      "src/engines/india-bengali/astronomy/panchang.ts",
+      "src/engines/india-bengali/services/date-time.ts",
+      "tests/calendar/india-bengali/engine.test.mjs",
+      "docs/INDIA_BENGALI_ENGINE.md"
     ],
     "modifiedFiles": [
-      "package.json",
       "README.md",
+      "docs/IMPLEMENTATION.md",
       "docs/TEST_REPORT.md",
       "IMPLEMENTATION_MANIFEST.json"
     ],
+    "methodology": "Meeus analytical solar/lunar calculations, Lahiri/Chitrapaksha approximation, West Bengal post-Sankranti civil month start, sunrise-based Panchang limbs, location and IANA time-zone metadata.",
     "verification": {
       "typecheck": "passed",
-      "tests": "14 passed, 0 failed",
+      "tests": "26 passed, 0 failed (all three engines)",
       "build": "passed"
-    }
+    },
+    "limitations": "Approximate analytical Drik-style profile; not Swiss Ephemeris, not a publisher-specific Panjika, and not a Surya Siddhanta implementation."
   }
 }

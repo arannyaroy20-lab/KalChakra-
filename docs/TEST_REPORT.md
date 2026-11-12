@@ -32,10 +32,30 @@ npm test
 npm run build
 ```
 
-`npm test` runs both `tests/calendar/bd-national/` and `tests/calendar/bd-bengali/` using
+`npm test` runs all three engine test folders under `tests/calendar/` using
 Node's built-in test runner after compiling TypeScript to `dist/`.
 
 ## Data limitations
 
 See `DATA_SOURCES.md` and `BD_BENGALI_ENGINE.md`. The Bengali engine is a deterministic
 civil-calendar conversion engine, not a traditional sunrise-based or lunar Panjika.
+
+## India Bengali Calendar (Phase 4C)
+
+- Kolkata West Bengal Panjika reference date (12 November 2026 = 26 Kartik 1433)
+- Sankranti instant versus following local Bengali month-start date
+- Twelve variable solar month boundaries and derived month lengths
+- Bengali ↔ Gregorian round trips at all month starts and every date in Bangabda 1433
+- Pohela Boishakh/year boundary and Gregorian leap-day round trip
+- Kolkata reference Panchang values: tithi, nakshatra, yoga, karana, sunrise and sunset
+- Tithi and nakshatra transition checks immediately before and after calculated end instants
+- Location/time-zone metadata and location-dependent sunrise calculations
+- Invalid ISO dates, invalid Bengali dates, invalid IANA time zones and unsupported calculation years
+
+The Phase 4C astronomy tests compare calculated Kolkata values with published minute-level references and use tolerances; they do not assert fabricated exact-second matches. See `INDIA_BENGALI_ENGINE.md` for methodology and source limitations.
+
+## Latest full-suite result (Phase 4C delivery)
+
+- TypeScript typecheck: passed
+- Full test suite: 26 passed, 0 failed across Phases 4A, 4B and 4C
+- Production TypeScript build: passed
