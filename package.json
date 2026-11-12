@@ -1,0 +1,14 @@
+{
+  "name": "multical-bd-national-engine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/calendar/bd-national/*.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

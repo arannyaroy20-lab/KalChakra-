@@ -1,0 +1,267 @@
+{
+  "metadata": {
+    "year": 2027,
+    "datasetVersion": "0.1.0",
+    "generatedAt": "2026-11-10",
+    "completeness": "partial",
+    "notes": [
+      "Contains only fixed Gregorian observances transcribed from the Cabinet Division circular dated 2026-10-11.",
+      "The 2027 MOPA holiday notice is published (2026-11-05), but its attached detailed holiday schedule was not accessible for reliable row-by-row transcription at build time.",
+      "No 2027 public-holiday status or moon-dependent dates are inferred here. HolidayStatus is unknown until the official schedule is transcribed and reviewed."
+    ]
+  },
+  "events": [
+    {
+      "id": "bdn-2027-shahid-dibosh",
+      "engine": "bd-national",
+      "title": {
+        "bn": "শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস",
+        "en": "Shaheed Day and International Mother Language Day"
+      },
+      "description": {
+        "bn": "ভাষা আন্দোলনের শহীদদের স্মরণ এবং মাতৃভাষার মর্যাদা প্রতিষ্ঠার দিন।",
+        "en": "A day to remember the martyrs of the Language Movement and affirm the dignity of mother languages."
+      },
+      "startDate": "2027-02-21",
+      "endDate": "2027-02-21",
+      "category": "national",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-national-insurance",
+      "engine": "bd-national",
+      "title": {
+        "bn": "জাতীয় বীমা দিবস",
+        "en": "National Insurance Day"
+      },
+      "description": {
+        "bn": "বাংলাদেশে বীমা খাতের গুরুত্ব ও সচেতনতা তুলে ধরার জাতীয় দিবস।",
+        "en": "A national observance highlighting the importance of insurance and public awareness."
+      },
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-01",
+      "category": "government",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-genocide-day",
+      "engine": "bd-national",
+      "title": {
+        "bn": "গণহত্যা দিবস",
+        "en": "Genocide Day"
+      },
+      "description": {
+        "bn": "১৯৭১ সালের ২৫ মার্চের গণহত্যার স্মরণে পালিত হয়।",
+        "en": "Observed in remembrance of the genocide of 25 March 1971."
+      },
+      "startDate": "2027-03-25",
+      "endDate": "2027-03-25",
+      "category": "historical",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-independence",
+      "engine": "bd-national",
+      "title": {
+        "bn": "স্বাধীনতা ও জাতীয় দিবস",
+        "en": "Independence and National Day"
+      },
+      "description": {
+        "bn": "বাংলাদেশের স্বাধীনতার ঘোষণা ও মুক্তিযুদ্ধের সূচনার স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating the declaration of independence and the beginning of the Liberation War."
+      },
+      "startDate": "2027-03-26",
+      "endDate": "2027-03-26",
+      "category": "national",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-bengali-new-year",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বাংলা নববর্ষ",
+        "en": "Bengali New Year"
+      },
+      "description": {
+        "bn": "বাংলা সনের নতুন বছরের সূচনা।",
+        "en": "The beginning of the Bengali calendar year."
+      },
+      "startDate": "2027-04-14",
+      "endDate": "2027-04-14",
+      "category": "cultural",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-may-day",
+      "engine": "bd-national",
+      "title": {
+        "bn": "মে দিবস",
+        "en": "May Day"
+      },
+      "description": {
+        "bn": "শ্রমজীবী মানুষের অধিকার ও মর্যাদার প্রতি সংহতি প্রকাশের দিন।",
+        "en": "An observance recognising workers’ rights and dignity."
+      },
+      "startDate": "2027-05-01",
+      "endDate": "2027-05-01",
+      "category": "international",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-july-uprising",
+      "engine": "bd-national",
+      "title": {
+        "bn": "জুলাই গণঅভ্যুত্থান দিবস",
+        "en": "July Mass Uprising Day"
+      },
+      "description": {
+        "bn": "জুলাই গণঅভ্যুত্থানের স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating the July Mass Uprising."
+      },
+      "startDate": "2027-08-05",
+      "endDate": "2027-08-05",
+      "category": "national",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-victory",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিজয় দিবস",
+        "en": "Victory Day"
+      },
+      "description": {
+        "bn": "১৯৭১ সালের ১৬ ডিসেম্বর বাংলাদেশের চূড়ান্ত বিজয়ের স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating Bangladesh’s victory on 16 December 1971."
+      },
+      "startDate": "2027-12-16",
+      "endDate": "2027-12-16",
+      "category": "national",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2027-christmas",
+      "engine": "bd-national",
+      "title": {
+        "bn": "যিশু খ্রিষ্টের জন্মদিন (বড়দিন)",
+        "en": "Christmas Day"
+      },
+      "description": {
+        "bn": "খ্রিষ্টান সম্প্রদায়ের ধর্মীয় উৎসব।",
+        "en": "A Christian religious festival."
+      },
+      "startDate": "2027-12-25",
+      "endDate": "2027-12-25",
+      "category": "religious",
+      "holidayStatus": "unknown",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    }
+  ]
+}

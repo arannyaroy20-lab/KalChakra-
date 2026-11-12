@@ -1,0 +1,607 @@
+{
+  "metadata": {
+    "year": 2026,
+    "datasetVersion": "0.1.0",
+    "generatedAt": "2026-11-10",
+    "completeness": "partial",
+    "notes": [
+      "Curated starter dataset, not a complete transcription of every optional or restricted holiday.",
+      "Religious dates dependent on moon sighting are marked provisional.",
+      "Official MOPA notification is the authority for 2026 holiday classifications.",
+      "Cabinet Division circular dated 2026-10-11 is used for national and observance dates."
+    ]
+  },
+  "events": [
+    {
+      "id": "bdn-2026-shahid-dibosh",
+      "engine": "bd-national",
+      "title": {
+        "bn": "শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস",
+        "en": "Shaheed Day and International Mother Language Day"
+      },
+      "description": {
+        "bn": "ভাষা আন্দোলনের শহীদদের স্মরণ এবং মাতৃভাষার মর্যাদা প্রতিষ্ঠার দিন।",
+        "en": "A day to remember the martyrs of the Language Movement and affirm the dignity of mother languages."
+      },
+      "startDate": "2026-02-21",
+      "endDate": "2026-02-21",
+      "category": "national",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-national-insurance",
+      "engine": "bd-national",
+      "title": {
+        "bn": "জাতীয় বীমা দিবস",
+        "en": "National Insurance Day"
+      },
+      "description": {
+        "bn": "বাংলাদেশে বীমা খাতের গুরুত্ব ও সচেতনতা তুলে ধরার জাতীয় দিবস।",
+        "en": "A national observance highlighting the importance of insurance and public awareness."
+      },
+      "startDate": "2026-03-01",
+      "endDate": "2026-03-01",
+      "category": "government",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-genocide-day",
+      "engine": "bd-national",
+      "title": {
+        "bn": "গণহত্যা দিবস",
+        "en": "Genocide Day"
+      },
+      "description": {
+        "bn": "১৯৭১ সালের ২৫ মার্চের গণহত্যার স্মরণে পালিত হয়।",
+        "en": "Observed in remembrance of the genocide of 25 March 1971."
+      },
+      "startDate": "2026-03-25",
+      "endDate": "2026-03-25",
+      "category": "historical",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-independence",
+      "engine": "bd-national",
+      "title": {
+        "bn": "স্বাধীনতা ও জাতীয় দিবস",
+        "en": "Independence and National Day"
+      },
+      "description": {
+        "bn": "বাংলাদেশের স্বাধীনতার ঘোষণা ও মুক্তিযুদ্ধের সূচনার স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating the declaration of independence and the beginning of the Liberation War."
+      },
+      "startDate": "2026-03-26",
+      "endDate": "2026-03-26",
+      "category": "national",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-may-day",
+      "engine": "bd-national",
+      "title": {
+        "bn": "মে দিবস",
+        "en": "May Day"
+      },
+      "description": {
+        "bn": "শ্রমজীবী মানুষের অধিকার ও মর্যাদার প্রতি সংহতি প্রকাশের দিন।",
+        "en": "An observance recognising workers’ rights and dignity."
+      },
+      "startDate": "2026-05-01",
+      "endDate": "2026-05-01",
+      "category": "international",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-buddha-purnima",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বুদ্ধ পূর্ণিমা (বৈশাখী পূর্ণিমা)",
+        "en": "Buddha Purnima (Boishakhi Purnima)"
+      },
+      "description": {
+        "bn": "গৌতম বুদ্ধের জন্ম, বোধিলাভ ও মহাপরিনির্বাণ স্মরণে বৌদ্ধ ধর্মাবলম্বীদের উৎসব।",
+        "en": "A major Buddhist observance commemorating the birth, enlightenment and passing of Gautama Buddha."
+      },
+      "startDate": "2026-05-01",
+      "endDate": "2026-05-01",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "officially-announced",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-eid-ul-azha",
+      "engine": "bd-national",
+      "title": {
+        "bn": "ঈদুল আজহা",
+        "en": "Eid al-Adha"
+      },
+      "description": {
+        "bn": "মুসলিম সম্প্রদায়ের অন্যতম প্রধান ধর্মীয় উৎসব।",
+        "en": "One of the major religious festivals observed by Muslims."
+      },
+      "startDate": "2026-05-28",
+      "endDate": "2026-05-28",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "provisional",
+      "dateStatus": "subject-to-moon-sighting",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ],
+      "dateNote": "প্রজ্ঞাপনে ঘোষিত তারিখ; চাঁদ দেখার ওপর নির্ভরশীল।"
+    },
+    {
+      "id": "bdn-2026-july-uprising",
+      "engine": "bd-national",
+      "title": {
+        "bn": "জুলাই গণঅভ্যুত্থান দিবস",
+        "en": "July Mass Uprising Day"
+      },
+      "description": {
+        "bn": "জুলাই গণঅভ্যুত্থানের স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating the July Mass Uprising."
+      },
+      "startDate": "2026-08-05",
+      "endDate": "2026-08-05",
+      "category": "national",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-eid-milad",
+      "engine": "bd-national",
+      "title": {
+        "bn": "ঈদে মিলাদুন্নবী (সা.)",
+        "en": "Eid-e-Milad-un-Nabi"
+      },
+      "description": {
+        "bn": "হজরত মুহাম্মদ (সা.)-এর জন্মস্মরণে পালিত ধর্মীয় observance।",
+        "en": "A religious observance commemorating the birth of Prophet Muhammad."
+      },
+      "startDate": "2026-08-26",
+      "endDate": "2026-08-26",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "provisional",
+      "dateStatus": "subject-to-moon-sighting",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ],
+      "dateNote": "প্রজ্ঞাপনে ঘোষিত তারিখ; চাঁদ দেখার ওপর নির্ভরশীল।"
+    },
+    {
+      "id": "bdn-2026-janmashtami",
+      "engine": "bd-national",
+      "title": {
+        "bn": "জন্মাষ্টমী",
+        "en": "Janmashtami"
+      },
+      "description": {
+        "bn": "হিন্দু সম্প্রদায়ের কাছে শ্রীকৃষ্ণের জন্মোৎসব।",
+        "en": "A Hindu festival celebrating the birth of Krishna."
+      },
+      "startDate": "2026-09-04",
+      "endDate": "2026-09-04",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-durga-puja",
+      "engine": "bd-national",
+      "title": {
+        "bn": "দুর্গাপূজা (নবমী ও বিজয়া দশমী)",
+        "en": "Durga Puja (Navami and Vijaya Dashami)"
+      },
+      "description": {
+        "bn": "দুর্গাপূজা উপলক্ষে নির্ধারিত সরকারি ছুটির দিন।",
+        "en": "Government holidays designated for Durga Puja."
+      },
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-21",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-victory",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিজয় দিবস",
+        "en": "Victory Day"
+      },
+      "description": {
+        "bn": "১৯৭১ সালের ১৬ ডিসেম্বর বাংলাদেশের চূড়ান্ত বিজয়ের স্মরণে জাতীয় দিবস।",
+        "en": "A national day commemorating Bangladesh’s victory on 16 December 1971."
+      },
+      "startDate": "2026-12-16",
+      "endDate": "2026-12-16",
+      "category": "national",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-christmas",
+      "engine": "bd-national",
+      "title": {
+        "bn": "যিশু খ্রিষ্টের জন্মদিন (বড়দিন)",
+        "en": "Christmas Day"
+      },
+      "description": {
+        "bn": "খ্রিষ্টান সম্প্রদায়ের ধর্মীয় উৎসব; বাংলাদেশে সরকারি ছুটি।",
+        "en": "A Christian religious festival and a public holiday in Bangladesh."
+      },
+      "startDate": "2026-12-25",
+      "endDate": "2026-12-25",
+      "category": "religious",
+      "holidayStatus": "general-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-bengali-new-year",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বাংলা নববর্ষ",
+        "en": "Bengali New Year"
+      },
+      "description": {
+        "bn": "বাংলা সনের নতুন বছরের সূচনা।",
+        "en": "The beginning of the Bengali calendar year."
+      },
+      "startDate": "2026-04-14",
+      "endDate": "2026-04-14",
+      "category": "cultural",
+      "holidayStatus": "executive-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        },
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-chaitra-sankranti",
+      "engine": "bd-national",
+      "title": {
+        "bn": "চৈত্র সংক্রান্তি",
+        "en": "Chaitra Sankranti"
+      },
+      "description": {
+        "bn": "পার্বত্য চট্টগ্রামের নির্দিষ্ট অঞ্চলে পালিত বর্ষসমাপনী উৎসব।",
+        "en": "A year-end cultural observance in designated areas of the Chittagong Hill Tracts."
+      },
+      "startDate": "2026-04-13",
+      "endDate": "2026-04-13",
+      "category": "cultural",
+      "holidayStatus": "regional-holiday",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "জনপ্রশাসন মন্ত্রণালয়, বাংলাদেশ সরকার",
+          "title": "২০২৬ খ্রিষ্টাব্দের ছুটির তালিকার প্রজ্ঞাপন (৯ নভেম্বর ২০২৫)",
+          "url": "https://mopa.gov.bd/pages/public-holiday/%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%96%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%B7%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%9B%E0%A7%81%E0%A6%9F%E0%A6%BF%E0%A6%B0-%E0%A6%A4%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B0-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-2df487-694139b2a31054345f0e6346",
+          "publishedAt": "2025-11-09",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ],
+      "dateNote": "প্রজ্ঞাপন অনুযায়ী রাঙামাটি, খাগড়াছড়ি ও বান্দরবান পার্বত্য জেলার জন্য প্রযোজ্য।"
+    },
+    {
+      "id": "bdn-2026-world-environment",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিশ্ব পরিবেশ দিবস",
+        "en": "World Environment Day"
+      },
+      "description": {
+        "bn": "পরিবেশ সংরক্ষণ বিষয়ে সচেতনতা বৃদ্ধির আন্তর্জাতিক দিবস।",
+        "en": "An international day promoting awareness and action for environmental protection."
+      },
+      "startDate": "2026-06-05",
+      "endDate": "2026-06-05",
+      "category": "international",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-world-health",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিশ্ব স্বাস্থ্য দিবস",
+        "en": "World Health Day"
+      },
+      "description": {
+        "bn": "স্বাস্থ্য বিষয়ে বৈশ্বিক সচেতনতা বৃদ্ধির দিবস।",
+        "en": "A global observance promoting awareness of health issues."
+      },
+      "startDate": "2026-04-07",
+      "endDate": "2026-04-07",
+      "category": "international",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-world-teachers",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিশ্ব শিক্ষক দিবস",
+        "en": "World Teachers’ Day"
+      },
+      "description": {
+        "bn": "শিক্ষক ও শিক্ষার অবদানকে স্বীকৃতি দেওয়ার আন্তর্জাতিক দিবস।",
+        "en": "An international observance recognising teachers and their contribution to education."
+      },
+      "startDate": "2026-10-05",
+      "endDate": "2026-10-05",
+      "category": "international",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    },
+    {
+      "id": "bdn-2026-human-rights",
+      "engine": "bd-national",
+      "title": {
+        "bn": "বিশ্ব মানবাধিকার দিবস",
+        "en": "Human Rights Day"
+      },
+      "description": {
+        "bn": "মানবাধিকারের সর্বজনীন ঘোষণাপত্র স্মরণে পালিত আন্তর্জাতিক দিবস।",
+        "en": "An international day commemorating the Universal Declaration of Human Rights."
+      },
+      "startDate": "2026-12-10",
+      "endDate": "2026-12-10",
+      "category": "international",
+      "holidayStatus": "none",
+      "verificationStatus": "verified",
+      "dateStatus": "fixed",
+      "sources": [
+        {
+          "publisher": "মন্ত্রিপরিষদ বিভাগ, বাংলাদেশ সরকার",
+          "title": "জাতীয় ও আন্তর্জাতিক দিবস উদ্‌যাপন/পালন সংক্রান্ত পরিপত্র (১১ অক্টোবর ২০২৬)",
+          "url": "https://cabinet.gov.bd/pages/notification-circulars/%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%93-%E0%A6%86%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A6%B0%E0%A7%8D%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%BF%E0%A6%AC%E0%A6%B8-%E0%A6%89%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%A8%E0%A6%AA%E0%A6%BE%E0%A6%B2%E0%A6%A8-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AA%E0%A6%A4%E0%A7%8D%E0%A6%B0-a3tza5-6acb2939734da992ba712b86",
+          "publishedAt": "2026-10-11",
+          "accessedAt": "2026-11-10",
+          "authority": "primary"
+        }
+      ]
+    }
+  ]
+}
