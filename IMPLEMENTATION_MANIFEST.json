@@ -2,8 +2,8 @@
   "project": "MultiCal Calendar Engine Modules",
   "version": "0.1.0",
   "created": "2026-11-10",
-  "updated": "2026-11-12",
-  "fileCount": 39,
+  "updated": "2026-11-13",
+  "fileCount": 54,
   "files": [
     "IMPLEMENTATION_MANIFEST.json",
     "README.md",
@@ -12,6 +12,7 @@
     "docs/DATA_SOURCES.md",
     "docs/IMPLEMENTATION.md",
     "docs/INDIA_BENGALI_ENGINE.md",
+    "docs/ISKCON_MAYAPUR_ENGINE.md",
     "docs/TEST_REPORT.md",
     "package.json",
     "src/core/types/calendar-event.types.ts",
@@ -40,15 +41,30 @@
     "src/engines/india-bengali/india-bengali.engine.ts",
     "src/engines/india-bengali/services/date-time.ts",
     "src/engines/india-bengali/types.ts",
+    "src/engines/iskcon-mayapur/astronomy/meeus.ts",
+    "src/engines/iskcon-mayapur/astronomy/panchang.ts",
+    "src/engines/iskcon-mayapur/astronomy/sunrise.ts",
+    "src/engines/iskcon-mayapur/constants.ts",
+    "src/engines/iskcon-mayapur/ekadashi/ekadashi.ts",
+    "src/engines/iskcon-mayapur/ekadashi/parana.ts",
+    "src/engines/iskcon-mayapur/festivals/festivals.ts",
+    "src/engines/iskcon-mayapur/festivals/reference-data.ts",
+    "src/engines/iskcon-mayapur/index.ts",
+    "src/engines/iskcon-mayapur/iskcon-mayapur.engine.ts",
+    "src/engines/iskcon-mayapur/observances/vaishnava-rules.ts",
+    "src/engines/iskcon-mayapur/services/date-time.ts",
+    "src/engines/iskcon-mayapur/types.ts",
     "tests/calendar/bd-bengali/calendar.test.mjs",
     "tests/calendar/bd-national/engine.test.mjs",
     "tests/calendar/india-bengali/engine.test.mjs",
+    "tests/calendar/iskcon-mayapur/engine.test.mjs",
     "tsconfig.json"
   ],
   "engines": [
     "bd-national",
     "bd-bengali",
-    "india-bengali"
+    "india-bengali",
+    "iskcon-mayapur"
   ],
   "phase4a": {
     "status": "preserved",
@@ -86,5 +102,40 @@
       "build": "passed"
     },
     "limitations": "Approximate analytical Drik-style profile; not Swiss Ephemeris, not a publisher-specific Panjika, and not a Surya Siddhanta implementation."
+  },
+  "phase4d": {
+    "status": "implemented-with-explicit-accuracy-limitations",
+    "createdFiles": [
+      "docs/ISKCON_MAYAPUR_ENGINE.md",
+      "src/engines/iskcon-mayapur/astronomy/meeus.ts",
+      "src/engines/iskcon-mayapur/astronomy/panchang.ts",
+      "src/engines/iskcon-mayapur/astronomy/sunrise.ts",
+      "src/engines/iskcon-mayapur/constants.ts",
+      "src/engines/iskcon-mayapur/ekadashi/ekadashi.ts",
+      "src/engines/iskcon-mayapur/ekadashi/parana.ts",
+      "src/engines/iskcon-mayapur/festivals/festivals.ts",
+      "src/engines/iskcon-mayapur/festivals/reference-data.ts",
+      "src/engines/iskcon-mayapur/index.ts",
+      "src/engines/iskcon-mayapur/iskcon-mayapur.engine.ts",
+      "src/engines/iskcon-mayapur/observances/vaishnava-rules.ts",
+      "src/engines/iskcon-mayapur/services/date-time.ts",
+      "src/engines/iskcon-mayapur/types.ts",
+      "tests/calendar/iskcon-mayapur/engine.test.mjs"
+    ],
+    "modifiedFiles": [
+      "README.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json"
+    ],
+    "methodology": "Independent Meeus analytical Sun/Moon series, Lahiri approximation, local sunrise/arunodaya, pure Vaishnava observance evaluator, official Mayapur 2026–27 reference records.",
+    "referenceCoverage": "Official Mayapur March 2026–March 2027 annual festival calendar; partial transcription of major observances and Ekadashi/Parana rows.",
+    "verification": {
+      "tests": "39 passed, 0 failed",
+      "typecheck": "passed",
+      "build": "passed",
+      "npmInstall": "failed to reach registry.npmjs.org (EAI_AGAIN); no dependency changes"
+    },
+    "limitations": "Not certified as GBC/GCAL output. General astronomical/Ekadashi candidates unverified; published Parana only; moonrise/moonset unavailable; no full adhika masa/Gaurabda engine."
   }
 }

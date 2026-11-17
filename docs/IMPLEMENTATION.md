@@ -15,3 +15,7 @@ The Bangladesh Bengali Engine is a pure TypeScript conversion module. It shares 
 See [INDIA_BENGALI_ENGINE.md](./INDIA_BENGALI_ENGINE.md).
 
 The India Bengali engine independently derives variable solar month boundaries from calculated Sankrantis and exposes a Meeus-based Drik-style Panchang profile (tithi, nakshatra, yoga, karana, sunrise and sunset). It records location, IANA time zone, method, ayanamsa profile and calculated provenance. It does not use Bangladesh's revised Bengali calendar rules and does not claim to reproduce Surya Siddhanta or every publisher's Panjika.
+
+## Phase 4D — ISKCON Mayapur Calendar
+
+See [ISKCON_MAYAPUR_ENGINE.md](./ISKCON_MAYAPUR_ENGINE.md). This engine owns a separate copy of its Meeus analytical astronomy and sunrise calculations, a local-sunrise/arunodaya observance decision layer, and source-backed Mayapur annual observances for March 2026–March 2027. It does not reuse the India Bengali engine's runtime modules. Published Mayapur reference dates and Parana windows are marked verified-reference; general astronomical candidates remain explicitly unverified.

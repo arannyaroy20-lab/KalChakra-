@@ -1,0 +1,7 @@
+import type { MayapurLocation } from "./types.js";
+export const DEFAULT_LOCATION: MayapurLocation = { name: "Sri Mayapur, Nadia, West Bengal, India", latitude: 23.4241, longitude: 88.3883, elevationMeters: 15, timeZone: "Asia/Kolkata" };
+export const TITHI_NAMES = ["Pratipat","Dvitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dvadashi","Trayodashi","Chaturdashi","Purnima","Pratipat","Dvitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dvadashi","Trayodashi","Chaturdashi","Amavasya"] as const;
+export const NAKSHATRA_NAMES = ["Ashvini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Svati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"] as const;
+export const YOGA_NAMES = ["Vishkambha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarma","Dhriti","Shula","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyana","Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla","Brahma","Indra","Vaidhriti"] as const;
+export const KARANA_NAMES = ["Bava","Balava","Kaulava","Taitila","Gara","Vanija","Vishti","Shakuni","Chatushpada","Naga","Kimstughna"] as const;
+export const OFFICIAL_MAYAPUR_CALENDAR_URL = "https://srimayapurdhama.com/festivals/2026-2027/";
