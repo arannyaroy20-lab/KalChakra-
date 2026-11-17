@@ -1,19 +1,19 @@
-# MultiCal Engine Test Report
+# MultiCal Engine and Integration Test Report
 
-## Phase 4D verification
+## Phase 5A verification
 
-- Bangladesh National Calendar: existing suite passed.
-- Bangladesh Bengali Calendar: existing suite passed, including complete-year round trips.
-- India Bengali Calendar: existing suite passed, including its Kolkata reference Panchang and solar-month fixtures.
-- ISKCON Mayapur Calendar: tests cover default Mayapur coordinates/time zone, sunrise/sunset output, tithi transitions, arunodaya, Shuddha Ekadashi decision, Dashami-at-arunodaya/Mahadvadashi candidate, Vriddhi and Kshaya candidate classification, published Ekadashi/Parana reference dates, major festival fixtures, location override, invalid inputs and year boundaries.
-
-The ISKCON annual reference fixtures are transcribed from the official ISKCON Mayapur Festival Calendar (March 2026–March 2027). The astronomical Panchang tests currently verify internal transition behavior and location handling; they do not constitute independent ephemeris certification. The generic Ekadashi rule evaluator is deliberately marked provisional outside published reference records.
+- Existing Phase 4A–4D engine suites remain included and unchanged.
+- New integration tests verify registry completeness, adapter retrieval, selection stability, independent Bangladesh/West Bengal conversions, unsupported operations, Mayapur Panchang/event access, Bengali/English localization independence, invalid IDs and metadata capabilities.
 
 ## Current run
 
-- `npm test`: 39 passed, 0 failed.
+- `npm test`: **48 passed, 0 failed** (39 existing engine tests + 9 integration tests).
 - `npm run build`: passed.
 - `npm run typecheck`: passed.
-- `npm install`: attempted but could not reach `registry.npmjs.org` (`EAI_AGAIN` DNS/network failure). No package dependencies changed and no package lockfile was generated.
+- `npm install --no-audit --no-fund`: attempted; timed out while contacting the package registry. No dependencies were added or changed and no package lockfile was created. The project has no new runtime dependencies; the available TypeScript compiler was used for build/typecheck.
 
-The final build/test run is performed against the merged source tree. See `IMPLEMENTATION_MANIFEST.json` for included files and phase status.
+The integration layer does not modify existing engine calculation logic. See `docs/CALENDAR_INTEGRATION.md` for capability boundaries and `IMPLEMENTATION_MANIFEST.json` for the complete package inventory.
+
+## Existing Phase 4D accuracy limitations remain
+
+The ISKCON Mayapur implementation is not certified as official GBC/GCAL output. Published Mayapur reference records cover March 2026–March 2027 partially; general astronomical/Ekadashi calculations remain provisional, moonrise/moonset are unavailable, and full Gaurabda/adhika-masa handling is not implemented.

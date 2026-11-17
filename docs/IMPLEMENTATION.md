@@ -19,3 +19,7 @@ The India Bengali engine independently derives variable solar month boundaries f
 ## Phase 4D — ISKCON Mayapur Calendar
 
 See [ISKCON_MAYAPUR_ENGINE.md](./ISKCON_MAYAPUR_ENGINE.md). This engine owns a separate copy of its Meeus analytical astronomy and sunrise calculations, a local-sunrise/arunodaya observance decision layer, and source-backed Mayapur annual observances for March 2026–March 2027. It does not reuse the India Bengali engine's runtime modules. Published Mayapur reference dates and Parana windows are marked verified-reference; general astronomical candidates remain explicitly unverified.
+
+## Phase 5A — Unified Calendar Integration Layer
+
+See [CALENDAR_INTEGRATION.md](./CALENDAR_INTEGRATION.md). `src/integration/` contains the typed capability contract, registry, four adapters and `CalendarManager`. Adapters delegate to the existing engine APIs; no calendar calculation source was rewritten. Calendar selection and `bn`/`en` display language are independent. Unsupported conversion operations fail with `UnsupportedCalendarOperationError` rather than returning fabricated values.

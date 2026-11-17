@@ -41,3 +41,7 @@ docs/
 See the engine-specific documentation in `docs/`, plus `docs/DATA_SOURCES.md`, `docs/IMPLEMENTATION.md` and `docs/TEST_REPORT.md`.
 
 **Accuracy note:** ISKCON Mayapur annual observance dates in the bundled reference period are sourced from the official Mayapur calendar. Astronomical calculations outside that reference are analytical and marked unverified; this package does not claim to reproduce the official GBC Calendar Research Committee/GCAL software.
+
+## Unified integration API (Phase 5A)
+
+`src/integration/` provides `CalendarManager`, a four-engine registry, typed capabilities, engine adapters and Bengali/English metadata formatting. See [docs/CALENDAR_INTEGRATION.md](docs/CALENDAR_INTEGRATION.md) for the capability matrix and examples. The facade exposes only operations actually supported by each engine; selecting a calendar is independent of changing the display language.

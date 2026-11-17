@@ -2,13 +2,14 @@
   "project": "MultiCal Calendar Engine Modules",
   "version": "0.1.0",
   "created": "2026-11-10",
-  "updated": "2026-11-13",
-  "fileCount": 54,
+  "updated": "2026-11-17",
+  "fileCount": 65,
   "files": [
     "IMPLEMENTATION_MANIFEST.json",
     "README.md",
     "docs/BD_BENGALI_ENGINE.md",
     "docs/BD_NATIONAL_ENGINE.md",
+    "docs/CALENDAR_INTEGRATION.md",
     "docs/DATA_SOURCES.md",
     "docs/IMPLEMENTATION.md",
     "docs/INDIA_BENGALI_ENGINE.md",
@@ -54,10 +55,20 @@
     "src/engines/iskcon-mayapur/observances/vaishnava-rules.ts",
     "src/engines/iskcon-mayapur/services/date-time.ts",
     "src/engines/iskcon-mayapur/types.ts",
+    "src/integration/adapters/bd-bengali.adapter.ts",
+    "src/integration/adapters/bd-national.adapter.ts",
+    "src/integration/adapters/india-bengali.adapter.ts",
+    "src/integration/adapters/iskcon-mayapur.adapter.ts",
+    "src/integration/calendar-manager.ts",
+    "src/integration/calendar-registry.ts",
+    "src/integration/formatting.ts",
+    "src/integration/index.ts",
+    "src/integration/types.ts",
     "tests/calendar/bd-bengali/calendar.test.mjs",
     "tests/calendar/bd-national/engine.test.mjs",
     "tests/calendar/india-bengali/engine.test.mjs",
     "tests/calendar/iskcon-mayapur/engine.test.mjs",
+    "tests/integration/calendar-manager.test.mjs",
     "tsconfig.json"
   ],
   "engines": [
@@ -75,67 +86,66 @@
     "verification": "included in full-suite tests"
   },
   "phase4c": {
-    "status": "implemented",
-    "createdFiles": [
-      "src/engines/india-bengali/types.ts",
-      "src/engines/india-bengali/constants.ts",
-      "src/engines/india-bengali/calendar-conversion.ts",
-      "src/engines/india-bengali/india-bengali.engine.ts",
-      "src/engines/india-bengali/index.ts",
-      "src/engines/india-bengali/astronomy/meeus.ts",
-      "src/engines/india-bengali/astronomy/sunrise.ts",
-      "src/engines/india-bengali/astronomy/panchang.ts",
-      "src/engines/india-bengali/services/date-time.ts",
-      "tests/calendar/india-bengali/engine.test.mjs",
-      "docs/INDIA_BENGALI_ENGINE.md"
-    ],
-    "modifiedFiles": [
-      "README.md",
-      "docs/IMPLEMENTATION.md",
-      "docs/TEST_REPORT.md",
-      "IMPLEMENTATION_MANIFEST.json"
-    ],
-    "methodology": "Meeus analytical solar/lunar calculations, Lahiri/Chitrapaksha approximation, West Bengal post-Sankranti civil month start, sunrise-based Panchang limbs, location and IANA time-zone metadata.",
-    "verification": {
-      "typecheck": "passed",
-      "tests": "26 passed, 0 failed (all three engines)",
-      "build": "passed"
-    },
-    "limitations": "Approximate analytical Drik-style profile; not Swiss Ephemeris, not a publisher-specific Panjika, and not a Surya Siddhanta implementation."
+    "status": "preserved",
+    "verification": "included in full-suite tests",
+    "limitations": "Meeus analytical approximation; not publisher-specific Panjika"
   },
   "phase4d": {
-    "status": "implemented-with-explicit-accuracy-limitations",
+    "status": "preserved-with-explicit-accuracy-limitations",
+    "verification": "included in full-suite tests",
+    "limitations": "Not certified as official GBC/GCAL output; partial published 2026–27 references and provisional general calculations."
+  },
+  "phase5a": {
+    "status": "implemented",
     "createdFiles": [
-      "docs/ISKCON_MAYAPUR_ENGINE.md",
-      "src/engines/iskcon-mayapur/astronomy/meeus.ts",
-      "src/engines/iskcon-mayapur/astronomy/panchang.ts",
-      "src/engines/iskcon-mayapur/astronomy/sunrise.ts",
-      "src/engines/iskcon-mayapur/constants.ts",
-      "src/engines/iskcon-mayapur/ekadashi/ekadashi.ts",
-      "src/engines/iskcon-mayapur/ekadashi/parana.ts",
-      "src/engines/iskcon-mayapur/festivals/festivals.ts",
-      "src/engines/iskcon-mayapur/festivals/reference-data.ts",
-      "src/engines/iskcon-mayapur/index.ts",
-      "src/engines/iskcon-mayapur/iskcon-mayapur.engine.ts",
-      "src/engines/iskcon-mayapur/observances/vaishnava-rules.ts",
-      "src/engines/iskcon-mayapur/services/date-time.ts",
-      "src/engines/iskcon-mayapur/types.ts",
-      "tests/calendar/iskcon-mayapur/engine.test.mjs"
+      "docs/CALENDAR_INTEGRATION.md",
+      "src/integration/adapters/bd-bengali.adapter.ts",
+      "src/integration/adapters/bd-national.adapter.ts",
+      "src/integration/adapters/india-bengali.adapter.ts",
+      "src/integration/adapters/iskcon-mayapur.adapter.ts",
+      "src/integration/calendar-manager.ts",
+      "src/integration/calendar-registry.ts",
+      "src/integration/formatting.ts",
+      "src/integration/index.ts",
+      "src/integration/types.ts",
+      "tests/integration/calendar-manager.test.mjs"
     ],
     "modifiedFiles": [
       "README.md",
       "docs/IMPLEMENTATION.md",
       "docs/TEST_REPORT.md",
-      "IMPLEMENTATION_MANIFEST.json"
+      "IMPLEMENTATION_MANIFEST.json",
+      "package.json"
     ],
-    "methodology": "Independent Meeus analytical Sun/Moon series, Lahiri approximation, local sunrise/arunodaya, pure Vaishnava observance evaluator, official Mayapur 2026–27 reference records.",
-    "referenceCoverage": "Official Mayapur March 2026–March 2027 annual festival calendar; partial transcription of major observances and Ekadashi/Parana rows.",
     "verification": {
-      "tests": "39 passed, 0 failed",
-      "typecheck": "passed",
+      "tests": "48 passed, 0 failed",
       "build": "passed",
-      "npmInstall": "failed to reach registry.npmjs.org (EAI_AGAIN); no dependency changes"
+      "typecheck": "passed",
+      "npmInstall": "timed out contacting package registry; no dependency changes"
     },
-    "limitations": "Not certified as GBC/GCAL output. General astronomical/Ekadashi candidates unverified; published Parana only; moonrise/moonset unavailable; no full adhika masa/Gaurabda engine."
+    "capabilities": {
+      "bd-national": [
+        "date-formatting",
+        "events"
+      ],
+      "bd-bengali": [
+        "gregorian-to-calendar",
+        "calendar-to-gregorian",
+        "date-formatting"
+      ],
+      "india-bengali": [
+        "gregorian-to-calendar",
+        "calendar-to-gregorian",
+        "date-formatting"
+      ],
+      "iskcon-mayapur": [
+        "date-formatting",
+        "calendar-information",
+        "panchang",
+        "events",
+        "observances"
+      ]
+    },
+    "limitations": "Only operations implemented by each engine are exposed. National and Mayapur date conversion are not claimed. Mayapur display uses Gregorian dates; events remain engine-specific typed records."
   }
 }
