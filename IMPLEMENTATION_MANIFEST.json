@@ -1,0 +1,246 @@
+{
+  "project": "MultiCal Working Calendar Converter",
+  "version": "0.2.0",
+  "created": "2026-11-10",
+  "updated": "2026-11-19",
+  "fileCount": 83,
+  "files": [
+    ".gitignore",
+    "IMPLEMENTATION_MANIFEST.json",
+    "README.md",
+    "docs/BD_BENGALI_ENGINE.md",
+    "docs/BD_NATIONAL_ENGINE.md",
+    "docs/CALENDAR_INTEGRATION.md",
+    "docs/DATA_SOURCES.md",
+    "docs/IMPLEMENTATION.md",
+    "docs/INDIA_BENGALI_ENGINE.md",
+    "docs/ISKCON_MAYAPUR_ENGINE.md",
+    "docs/TEST_REPORT.md",
+    "docs/UNIFIED_DATE_MODEL.md",
+    "docs/WORKING_CONVERTER_UI.md",
+    "index.html",
+    "package.json",
+    "src/application/calendar-service.ts",
+    "src/application/index.ts",
+    "src/core/types/calendar-event.types.ts",
+    "src/data-model/index.ts",
+    "src/data-model/normalize.ts",
+    "src/data-model/types.ts",
+    "src/data-model/validation.ts",
+    "src/engines/bd-bengali/bd-bengali.calendar.ts",
+    "src/engines/bd-bengali/constants.ts",
+    "src/engines/bd-bengali/date-utils.ts",
+    "src/engines/bd-bengali/index.ts",
+    "src/engines/bd-bengali/types.ts",
+    "src/engines/bd-national/bd-national.engine.ts",
+    "src/engines/bd-national/data/2026.json",
+    "src/engines/bd-national/data/2027.json",
+    "src/engines/bd-national/data/registry.ts",
+    "src/engines/bd-national/index.ts",
+    "src/engines/bd-national/services/date-utils.ts",
+    "src/engines/bd-national/services/duplicate-detection.ts",
+    "src/engines/bd-national/services/event-filter.ts",
+    "src/engines/bd-national/services/event-loader.ts",
+    "src/engines/bd-national/services/event-validator.ts",
+    "src/engines/bd-national/types.ts",
+    "src/engines/india-bengali/astronomy/meeus.ts",
+    "src/engines/india-bengali/astronomy/panchang.ts",
+    "src/engines/india-bengali/astronomy/sunrise.ts",
+    "src/engines/india-bengali/calendar-conversion.ts",
+    "src/engines/india-bengali/constants.ts",
+    "src/engines/india-bengali/index.ts",
+    "src/engines/india-bengali/india-bengali.engine.ts",
+    "src/engines/india-bengali/services/date-time.ts",
+    "src/engines/india-bengali/types.ts",
+    "src/engines/iskcon-mayapur/astronomy/meeus.ts",
+    "src/engines/iskcon-mayapur/astronomy/panchang.ts",
+    "src/engines/iskcon-mayapur/astronomy/sunrise.ts",
+    "src/engines/iskcon-mayapur/constants.ts",
+    "src/engines/iskcon-mayapur/ekadashi/ekadashi.ts",
+    "src/engines/iskcon-mayapur/ekadashi/parana.ts",
+    "src/engines/iskcon-mayapur/festivals/festivals.ts",
+    "src/engines/iskcon-mayapur/festivals/reference-data.ts",
+    "src/engines/iskcon-mayapur/index.ts",
+    "src/engines/iskcon-mayapur/iskcon-mayapur.engine.ts",
+    "src/engines/iskcon-mayapur/observances/vaishnava-rules.ts",
+    "src/engines/iskcon-mayapur/services/date-time.ts",
+    "src/engines/iskcon-mayapur/types.ts",
+    "src/integration/adapters/bd-bengali.adapter.ts",
+    "src/integration/adapters/bd-national.adapter.ts",
+    "src/integration/adapters/india-bengali.adapter.ts",
+    "src/integration/adapters/iskcon-mayapur.adapter.ts",
+    "src/integration/calendar-manager.ts",
+    "src/integration/calendar-registry.ts",
+    "src/integration/formatting.ts",
+    "src/integration/index.ts",
+    "src/integration/types.ts",
+    "src/ui/main.tsx",
+    "src/ui/react-shim.d.ts",
+    "src/ui/styles.css",
+    "src/validation/bangla-date-today.ts",
+    "tests/application/bangla-date-validation.test.mjs",
+    "tests/application/calendar-service.test.mjs",
+    "tests/calendar/bd-bengali/calendar.test.mjs",
+    "tests/calendar/bd-national/engine.test.mjs",
+    "tests/calendar/india-bengali/engine.test.mjs",
+    "tests/calendar/iskcon-mayapur/engine.test.mjs",
+    "tests/integration/calendar-manager.test.mjs",
+    "tests/integration/unified-date-model.test.mjs",
+    "tsconfig.json",
+    "vite.config.ts"
+  ],
+  "engines": [
+    "bd-national",
+    "bd-bengali",
+    "india-bengali",
+    "iskcon-mayapur"
+  ],
+  "phase4a": {
+    "status": "preserved",
+    "verification": "included in full-suite tests"
+  },
+  "phase4b": {
+    "status": "preserved",
+    "verification": "included in full-suite tests"
+  },
+  "phase4c": {
+    "status": "preserved",
+    "verification": "included in full-suite tests",
+    "limitations": "Meeus analytical approximation; not publisher-specific Panjika"
+  },
+  "phase4d": {
+    "status": "preserved-with-explicit-accuracy-limitations",
+    "verification": "included in full-suite tests",
+    "limitations": "Not certified as official GBC/GCAL output; partial published 2026–27 references and provisional general calculations."
+  },
+  "phase5a": {
+    "status": "implemented",
+    "createdFiles": [
+      "docs/CALENDAR_INTEGRATION.md",
+      "src/integration/adapters/bd-bengali.adapter.ts",
+      "src/integration/adapters/bd-national.adapter.ts",
+      "src/integration/adapters/india-bengali.adapter.ts",
+      "src/integration/adapters/iskcon-mayapur.adapter.ts",
+      "src/integration/calendar-manager.ts",
+      "src/integration/calendar-registry.ts",
+      "src/integration/formatting.ts",
+      "src/integration/index.ts",
+      "src/integration/types.ts",
+      "tests/integration/calendar-manager.test.mjs"
+    ],
+    "modifiedFiles": [
+      "README.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json",
+      "package.json"
+    ],
+    "verification": {
+      "tests": "48 passed, 0 failed",
+      "build": "passed",
+      "typecheck": "passed",
+      "npmInstall": "timed out contacting package registry; no dependency changes"
+    },
+    "capabilities": {
+      "bd-national": [
+        "date-formatting",
+        "events"
+      ],
+      "bd-bengali": [
+        "gregorian-to-calendar",
+        "calendar-to-gregorian",
+        "date-formatting"
+      ],
+      "india-bengali": [
+        "gregorian-to-calendar",
+        "calendar-to-gregorian",
+        "date-formatting"
+      ],
+      "iskcon-mayapur": [
+        "date-formatting",
+        "calendar-information",
+        "panchang",
+        "events",
+        "observances"
+      ]
+    },
+    "limitations": "Only operations implemented by each engine are exposed. National and Mayapur date conversion are not claimed. Mayapur display uses Gregorian dates; events remain engine-specific typed records."
+  },
+  "phase5b": {
+    "status": "implemented",
+    "createdFiles": [
+      "docs/UNIFIED_DATE_MODEL.md",
+      "src/data-model/index.ts",
+      "src/data-model/normalize.ts",
+      "src/data-model/types.ts",
+      "src/data-model/validation.ts",
+      "tests/integration/unified-date-model.test.mjs"
+    ],
+    "modifiedFiles": [
+      "README.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json",
+      "src/integration/index.ts"
+    ],
+    "verification": {
+      "tests": "58 passed, 0 failed",
+      "build": "passed",
+      "typecheck": "passed",
+      "npmInstall": "timed out contacting package registry; no dependency changes"
+    },
+    "normalizers": [
+      "bd-national",
+      "bd-bengali",
+      "india-bengali",
+      "iskcon-mayapur"
+    ],
+    "limitations": "Native date fields remain absent when unsupported; no Gaurabda date is inferred for Mayapur; India Bengali Panchang is not exposed by the Phase 5A adapter; Mayapur accuracy limitations from Phase 4D remain."
+  },
+  "baseline": "Phase 5B; Phase 5C intentionally excluded",
+  "phase5c": {
+    "status": "not-included",
+    "reason": "This application deliverable starts from the Phase 5B archive as explicitly requested."
+  },
+  "phase6Application": {
+    "status": "implemented",
+    "createdFiles": [
+      "docs/WORKING_CONVERTER_UI.md",
+      "index.html",
+      "src/application/calendar-service.ts",
+      "src/application/index.ts",
+      "src/validation/bangla-date-today.ts",
+      "src/ui/main.tsx",
+      "src/ui/styles.css",
+      "src/ui/react-shim.d.ts",
+      "tests/application/calendar-service.test.mjs",
+      "tests/application/bangla-date-validation.test.mjs",
+      "vite.config.ts"
+    ],
+    "modifiedFiles": [
+      "README.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json",
+      "package.json",
+      "tsconfig.json"
+    ],
+    "verification": {
+      "typescriptTypecheck": "passed",
+      "typescriptCompile": "passed",
+      "tests": "71 passed, 0 failed",
+      "npmInstall": "blocked by registry DNS EAI_AGAIN",
+      "viteBuild": "not run; Vite dependency could not be installed"
+    },
+    "features": [
+      "daily and monthly converter APIs",
+      "four-engine routing",
+      "React Bengali/English UI",
+      "Gregorian month navigation and date picker",
+      "India Bengali Panchang",
+      "Mayapur Panchang and observances",
+      "BanglaDateToday 24-hour validation cache and discrepancy reporting"
+    ],
+    "limitations": "National events bundled for 2026–2027 only; Bengali engines do not include curated event datasets; India and Mayapur astronomy are approximations; Mayapur Gaurabda date is not exposed; no Electron shell added."
+  }
+}
