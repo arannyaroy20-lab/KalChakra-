@@ -23,6 +23,8 @@ npm run build
 ```text
 src/
 ├── core/types/                  # Shared calendar contracts
+├── data-model/                  # Unified date/day types and engine normalizers
+├── integration/                 # Registry, adapters and CalendarManager
 └── engines/
     ├── bd-national/             # Bangladesh national events
     ├── bd-bengali/              # Bangladesh revised Bengali date conversion
@@ -45,3 +47,7 @@ See the engine-specific documentation in `docs/`, plus `docs/DATA_SOURCES.md`, `
 ## Unified integration API (Phase 5A)
 
 `src/integration/` provides `CalendarManager`, a four-engine registry, typed capabilities, engine adapters and Bengali/English metadata formatting. See [docs/CALENDAR_INTEGRATION.md](docs/CALENDAR_INTEGRATION.md) for the capability matrix and examples. The facade exposes only operations actually supported by each engine; selecting a calendar is independent of changing the display language.
+
+## Unified date data model (Phase 5B)
+
+`src/data-model/` normalizes actual results from all four engines into typed `CalendarDateModel` and `UnifiedCalendarDay` values. Gregorian date, engine identity, bilingual labels and provenance are retained; native calendar fields, Panchang and solar times remain optional when an engine does not supply them. Bangladesh's revised Bengali calendar and West Bengal Panjika remain distinct. See [docs/UNIFIED_DATE_MODEL.md](docs/UNIFIED_DATE_MODEL.md) for the normalization API, validation rules and field semantics.

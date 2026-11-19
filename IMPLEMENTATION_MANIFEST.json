@@ -2,8 +2,8 @@
   "project": "MultiCal Calendar Engine Modules",
   "version": "0.1.0",
   "created": "2026-11-10",
-  "updated": "2026-11-17",
-  "fileCount": 65,
+  "updated": "2026-11-19",
+  "fileCount": 71,
   "files": [
     "IMPLEMENTATION_MANIFEST.json",
     "README.md",
@@ -15,8 +15,13 @@
     "docs/INDIA_BENGALI_ENGINE.md",
     "docs/ISKCON_MAYAPUR_ENGINE.md",
     "docs/TEST_REPORT.md",
+    "docs/UNIFIED_DATE_MODEL.md",
     "package.json",
     "src/core/types/calendar-event.types.ts",
+    "src/data-model/index.ts",
+    "src/data-model/normalize.ts",
+    "src/data-model/types.ts",
+    "src/data-model/validation.ts",
     "src/engines/bd-bengali/bd-bengali.calendar.ts",
     "src/engines/bd-bengali/constants.ts",
     "src/engines/bd-bengali/date-utils.ts",
@@ -69,6 +74,7 @@
     "tests/calendar/india-bengali/engine.test.mjs",
     "tests/calendar/iskcon-mayapur/engine.test.mjs",
     "tests/integration/calendar-manager.test.mjs",
+    "tests/integration/unified-date-model.test.mjs",
     "tsconfig.json"
   ],
   "engines": [
@@ -147,5 +153,36 @@
       ]
     },
     "limitations": "Only operations implemented by each engine are exposed. National and Mayapur date conversion are not claimed. Mayapur display uses Gregorian dates; events remain engine-specific typed records."
+  },
+  "phase5b": {
+    "status": "implemented",
+    "createdFiles": [
+      "docs/UNIFIED_DATE_MODEL.md",
+      "src/data-model/index.ts",
+      "src/data-model/normalize.ts",
+      "src/data-model/types.ts",
+      "src/data-model/validation.ts",
+      "tests/integration/unified-date-model.test.mjs"
+    ],
+    "modifiedFiles": [
+      "README.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/TEST_REPORT.md",
+      "IMPLEMENTATION_MANIFEST.json",
+      "src/integration/index.ts"
+    ],
+    "verification": {
+      "tests": "58 passed, 0 failed",
+      "build": "passed",
+      "typecheck": "passed",
+      "npmInstall": "timed out contacting package registry; no dependency changes"
+    },
+    "normalizers": [
+      "bd-national",
+      "bd-bengali",
+      "india-bengali",
+      "iskcon-mayapur"
+    ],
+    "limitations": "Native date fields remain absent when unsupported; no Gaurabda date is inferred for Mayapur; India Bengali Panchang is not exposed by the Phase 5A adapter; Mayapur accuracy limitations from Phase 4D remain."
   }
 }

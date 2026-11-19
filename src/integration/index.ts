@@ -6,3 +6,5 @@ export type {
   CalendarEvents, CalendarId, CalendarMetadata, CalendarRegistryEntry, CalendarType,
   DisplayLanguage, LocalizedLabel
 } from "./types.js";
+
+export * from "../data-model/index.js";

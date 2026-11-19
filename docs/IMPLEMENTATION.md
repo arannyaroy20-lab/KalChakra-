@@ -23,3 +23,7 @@ See [ISKCON_MAYAPUR_ENGINE.md](./ISKCON_MAYAPUR_ENGINE.md). This engine owns a s
 ## Phase 5A — Unified Calendar Integration Layer
 
 See [CALENDAR_INTEGRATION.md](./CALENDAR_INTEGRATION.md). `src/integration/` contains the typed capability contract, registry, four adapters and `CalendarManager`. Adapters delegate to the existing engine APIs; no calendar calculation source was rewritten. Calendar selection and `bn`/`en` display language are independent. Unsupported conversion operations fail with `UnsupportedCalendarOperationError` rather than returning fabricated values.
+
+## Phase 5B — Unified Calendar Date Data Model
+
+See [UNIFIED_DATE_MODEL.md](./UNIFIED_DATE_MODEL.md). `src/data-model/` defines the shared `CalendarDateModel` and `UnifiedCalendarDay` contracts plus normalizers for Bangladesh National, Bangladesh revised Bengali, West Bengal Bengali and ISKCON Mayapur engine results. The normalizers preserve source records, engine-specific calculation metadata, Mayapur Panchang/observances and location/timezone values. Unsupported native date fields remain absent. The two Bengali calendars retain separate engine IDs and month validation. No engine calculation code was changed.
