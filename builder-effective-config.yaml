@@ -1,0 +1,32 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.multical.calendar
+productName: MultiCal
+asar: true
+files:
+  - filter:
+      - dist/**/*
+      - electron/**/*
+      - assets/**/*
+      - package.json
+win:
+  icon: assets/icon.ico
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-${arch}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: MultiCal
+portable:
+  artifactName: ${productName}-${version}-portable-${arch}.${ext}
+electronVersion: 40.10.6
