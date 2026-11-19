@@ -1,66 +1,132 @@
-# MultiCal — Calendar Converter (Web + Windows Desktop)
 
-MultiCal is a React + TypeScript + Vite calendar converter with an Electron desktop shell for Windows.
+<div align="center">
 
-## Included calendar systems
+# KalChakra
 
-- **Bangladesh National Calendar** (`bd-national`): government/national events and holidays, anchored to Gregorian dates.
-- **Bangladesh Bengali Calendar** (`bd-bengali`): Gregorian ↔ Bengali conversion using Bangladesh's revised 2019 Bangla Academy calendar.
-- **India Bengali Calendar** (`india-bengali`): separate West Bengal-style solar Bangabda conversion and Meeus-based Panchang calculations.
-- **ISKCON Mayapur Calendar** (`iskcon-mayapur`): independent Mayapur Panchang, sunrise/sunset and Vaishnava observances.
+**A multilingual calendar companion for Bengali dates, regional calendars, and traditional observances.**
 
-The four engines remain independent. The UI language (Bengali/English) is separate from calendar selection. Missing capabilities are shown as unavailable rather than inferred.
+[![Platform](https://img.shields.io/badge/platform-Windows-blue)](https://github.com/arannyaroy20-lab/KalChakra-)
+[![Built with](https://img.shields.io/badge/built%20with-React%20%7C%20TypeScript-3178C6)](https://www.typescriptlang.org/)
+[![Desktop](https://img.shields.io/badge/desktop-Electron-47848F)](https://www.electronjs.org/)
 
-## Windows development
+</div>
 
-Run these commands in PowerShell from the project folder:
+---
 
-```powershell
+## About
+
+KalChakra is a calendar application that brings multiple Bengali and regional calendar systems together in one place. It is designed to make date conversion and calendar information easier to explore through a Bengali- and English-language interface.
+
+Each calendar system uses its own calculation rules and data. The application keeps those systems separate rather than treating them as interchangeable.
+
+## Calendar systems
+
+| Calendar | What it provides |
+|---|---|
+| **Bangladesh National Calendar** | National dates, events, and holidays |
+| **Bangladesh Bengali Calendar** | Gregorian ↔ Bengali date conversion based on the revised Bangla Academy calendar |
+| **India Bengali Calendar** | West Bengal-style Bangabda date conversion and Panchang-related calculations |
+| **ISKCON Mayapur Calendar** | Mayapur Panchang information, sunrise/sunset data, and Vaishnava observances |
+
+### Application features
+
+- Bengali and English interface
+- Gregorian month navigation and date selection
+- Daily and monthly calendar information
+- Separate calculation engines for the supported calendar systems
+- Windows desktop application powered by Electron
+- Local calendar calculations and bundled data where available
+
+## Download
+
+Visit the **[Releases](https://github.com/arannyaroy20-lab/KalChakra-/releases)** page to find available Windows builds.
+
+Depending on the release, downloads may include:
+
+- **Installer** — installs the application on Windows.
+- **Portable version** — runs without a traditional installation.
+
+Always check the release notes for version-specific changes and known limitations.
+
+## Getting started
+
+### Requirements
+
+- Windows for the desktop application
+- [Node.js](https://nodejs.org/) and npm for development
+
+### Run locally
+
+Clone the repository and install its dependencies:
+
+```bash
+git clone https://github.com/arannyaroy20-lab/KalChakra-.git
+cd KalChakra-
 npm install
-npm run typecheck
-npm test
+```
+
+Start the web development server:
+
+```bash
+npm run dev
+```
+
+Start the Electron desktop application in development mode:
+
+```bash
 npm run electron:dev
 ```
 
-This opens the MultiCal desktop window while Vite serves the renderer. The original browser workflow remains available with `npm run dev`.
+## Development commands
 
-## Windows packaging
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Vite development server |
+| `npm run typecheck` | Run TypeScript type checking |
+| `npm test` | Run the test suite |
+| `npm run build` | Build the application |
+| `npm run electron:dev` | Run the Electron app with the Vite development server |
+| `npm run build:desktop` | Build Windows installer and portable packages |
+| `npm run build:installer` | Build the Windows installer |
+| `npm run build:portable` | Build the portable Windows executable |
 
-Build both the installer and portable executable:
+Packaged desktop builds are written to the `release/` directory.
 
-```powershell
-npm run build:desktop
-```
+## Technology
 
-Or build them separately:
+- **React** — user interface
+- **TypeScript** — application logic and type safety
+- **Vite** — development server and frontend build
+- **Electron** — Windows desktop runtime
+- **electron-builder** — desktop packaging
 
-```powershell
-npm run build:installer
-npm run build:portable
-```
+## Accuracy and data notes
 
-Artifacts are written to `release/`:
-- `MultiCal-0.2.0-x64.exe` — NSIS installer
-- `MultiCal-0.2.0-portable-x64.exe` — portable executable
+Calendar systems follow different regional conventions and calculation methods. Their available operations are therefore not identical.
 
-The exact artifact names follow the package version and architecture. Build Windows installers on Windows for the most predictable result.
+- Bangladesh National Calendar data currently includes 2026–2027.
+- Bengali calendar engines do not currently provide a complete curated event dataset.
+- India Bengali and Mayapur astronomical calculations are analytical approximations; they should not be treated as certified output from a specific Panjika publisher or official ISKCON calendar.
+- Mayapur Gaurabda dates are not currently provided.
+- Some reference links and optional validation features require an internet connection.
 
-## Desktop security
+For religious observances or other date-sensitive decisions, consult the relevant official or local calendar source as well.
 
-The Electron main process is in `electron/main.cjs`. Renderer Node integration is disabled, context isolation and sandboxing are enabled, and no preload bridge is exposed because the current UI does not need privileged desktop APIs. External HTTP(S) links are opened in the system browser; renderer-created windows are denied. The packaged app loads `dist/index.html` from its own application directory.
+## Project status
 
-## Offline behavior and known data coverage
+KalChakra is under active development. Features, supported date ranges, and calculation accuracy may change between releases. Check the [Issues](https://github.com/arannyaroy20-lab/KalChakra-/issues) and [Releases](https://github.com/arannyaroy20-lab/KalChakra-/releases) pages for updates.
 
-Calendar calculations and bundled datasets are local and work without an internet connection wherever data is available in the repository. The optional BanglaDateToday validation requires internet; if unavailable, the internal Bangladesh Bengali conversion remains authoritative.
+## Contributing
 
-Existing data limitations remain unchanged: Bangladesh national event data currently covers 2026–2027; the Bengali calendar engines and Mayapur astronomical/observance calculations retain their documented coverage and precision limitations. Some official/source URLs are references and naturally require internet when opened.
+Bug reports, suggestions, and contributions are welcome. If you find an incorrect date or calculation, please include:
 
-## Converter API
+1. The calendar system selected
+2. The date you checked
+3. The result you expected
+4. The result shown by the application
 
-`src/application/calendar-service.ts` provides `getCalendarDay(...)` and `getCalendarMonth(...)`, backed by the existing `CalendarManager`, registry, engine APIs and Phase 5B normalizers.
+This makes issues easier to investigate.
 
-Bangladesh Bengali dates can optionally be compared against BanglaDateToday. External results are comparison-only and never overwrite the internal engine result. See [docs/WORKING_CONVERTER_UI.md](docs/WORKING_CONVERTER_UI.md).
+## License
 
-## Baseline
-
-This deliverable starts from **Phase 5B** (four engines + Phase 5A integration + Phase 5B unified date model). **Phase 5C is not included.** Existing engine calculations and Phase 5A/5B modules are preserved.
+No license has been specified yet. Until a license is added to this repository, the default copyright rules apply; please do not assume the code is open for reuse or redistribution.
