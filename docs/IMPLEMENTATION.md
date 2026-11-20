@@ -27,3 +27,13 @@ See [CALENDAR_INTEGRATION.md](./CALENDAR_INTEGRATION.md). `src/integration/` con
 ## Phase 5B — Unified Calendar Date Data Model
 
 See [UNIFIED_DATE_MODEL.md](./UNIFIED_DATE_MODEL.md). `src/data-model/` defines the shared `CalendarDateModel` and `UnifiedCalendarDay` contracts plus normalizers for Bangladesh National, Bangladesh revised Bengali, West Bengal Bengali and ISKCON Mayapur engine results. The normalizers preserve source records, engine-specific calculation metadata, Mayapur Panchang/observances and location/timezone values. Unsupported native date fields remain absent. The two Bengali calendars retain separate engine IDs and month validation. No engine calculation code was changed.
+
+## Working Converter and React UI (Phase 5B baseline; Phase 5C excluded)
+
+This application build starts from the Phase 5B project archive. Phase 5C aggregation code is not included or used. The four engines, Phase 5A integration and Phase 5B normalizers remain in place.
+
+`src/application/calendar-service.ts` adds `getCalendarDay` and `getCalendarMonth`, returning normalized daily data and chronological Gregorian-month data for the selected engine. It composes the existing Bangladesh National engine, Bangladesh Bengali conversion, India Bengali conversion/Panchang and Mayapur engine. Location/timezone overrides are scoped to the requested calculation. The UI does not fill unsupported date fields or event lists.
+
+`src/validation/bangla-date-today.ts` provides optional BanglaDateToday comparison for Bangladesh Bengali dates. It caches explicit-date responses for 24 hours, supports browser localStorage where available, reports mismatch/offline/rate-limit/unavailable states, and never replaces the internal conversion.
+
+`src/ui/` contains the Bengali/English React interface and responsive Gregorian month grid. Calendar and interface language selectors are independent. The UI displays engine-specific availability, events, source names, verification status, Panchang and sunrise/sunset only where supplied. No Electron shell was present in the Phase 5B repository, so Vite is used without introducing a new desktop packaging architecture. See [WORKING_CONVERTER_UI.md](./WORKING_CONVERTER_UI.md).

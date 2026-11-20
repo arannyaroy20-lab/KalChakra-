@@ -19,8 +19,11 @@ export interface IndiaBengaliDate extends IndiaBengaliDateInput {
   calculation: CalculationMetadata;
 }
 
+export type SankrantiMethod = "surya-siddhanta" | "drik";
+
 export interface CalculationMetadata {
   method: "meeus-analytical";
+  sankrantiMethod: SankrantiMethod;
   ayanamsa: "lahiri-chitrapaksha-approximation";
   location: GeoLocation;
   timeZone: string;
@@ -52,6 +55,7 @@ export interface Sankranti {
   instant: string;
   localDate: string;
   startsBengaliDate: string;
+  method: SankrantiMethod;
 }
 
 export interface ValidationResult {

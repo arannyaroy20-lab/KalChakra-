@@ -13,10 +13,31 @@ import {
 
 const localIsoToDate = (value) => new Date(value.replace(/\[.*\]$/, ''));
 
-test('West Bengal reference date: 10 November 2026 is 24 Kartik 1433', () => {
+test('West Bengal (Surya Siddhanta) reference date: 10 November 2026 is 23 Kartik 1433', () => {
   const date = gregorianToBengali('2026-11-10');
-  assert.deepEqual([date.year, date.month, date.day], [1433, 7, 24]);
+  assert.deepEqual([date.year, date.month, date.day], [1433, 7, 23]);
   assert.equal(date.monthName.en, 'Kartik');
+});
+
+test('Drik-style convention remains available: 10 November 2026 is 24 Kartik 1433', () => {
+  const date = gregorianToBengali('2026-11-10', undefined, 'drik');
+  assert.deepEqual([date.year, date.month, date.day], [1433, 7, 24]);
+  assert.equal(date.calculation.sankrantiMethod, 'drik');
+});
+
+test('Surya Siddhanta month starts match published West Bengal dates for Bengali year 1433', () => {
+  // Reference: Applied Jyotish Bengali calendar pages (Boishakh 15 Apr, Ashwin 19 Sep, Kartik 19 Oct, Agrahayan 18 Nov, Poush 17 Dec 2026).
+  assert.equal(getMonthStart(1433, 1), '2026-04-15');
+  assert.equal(getMonthStart(1433, 6), '2026-09-19');
+  assert.equal(getMonthStart(1433, 7), '2026-10-19');
+  assert.equal(getMonthStart(1433, 8), '2026-11-18');
+  assert.equal(getMonthStart(1433, 9), '2026-12-17');
+  assert.equal(gregorianToBengali('2026-11-19').day, 2);
+  assert.equal(gregorianToBengali('2026-11-19').monthName.en, 'Agrahayan');
+  assert.equal(gregorianToBengali('2026-11-17').monthName.en, 'Kartik');
+  assert.equal(gregorianToBengali('2026-11-17').day, 30);
+  // Drik convention starts Agrahayan one day earlier.
+  assert.equal(getMonthStart(1433, 8, undefined, 'drik'), '2026-11-17');
 });
 
 test('reference Panchang timings for Kolkata 12 November 2026 are within published minute-level values', () => {
@@ -28,7 +49,7 @@ test('reference Panchang timings for Kolkata 12 November 2026 are within publish
   const within = (actual, expected, toleranceSeconds = 150) => {
     assert.ok(Math.abs(seconds(actual) - expected) <= toleranceSeconds, `${actual} differs from published reference`);
   };
-  assert.deepEqual([day.bengaliDate.year, day.bengaliDate.month, day.bengaliDate.day], [1433, 7, 26]);
+  assert.deepEqual([day.bengaliDate.year, day.bengaliDate.month, day.bengaliDate.day], [1433, 7, 25]);
   assert.equal(day.tithi.name, 'শুক্ল তৃতীয়া');
   assert.equal(day.nakshatra.name, 'জ্যেষ্ঠা');
   assert.equal(day.yoga.name, 'সুকর্মা');

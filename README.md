@@ -1,53 +1,66 @@
-# MultiCal — Calendar Engine Modules
+# MultiCal — Calendar Converter (Web + Windows Desktop)
 
-Standalone TypeScript implementation package for the four independent MultiCal calendar engines. This package currently contains the engine modules, shared event contract, curated data, tests and engineering notes; it is not yet the complete Electron/React desktop application shell.
+MultiCal is a React + TypeScript + Vite calendar converter with an Electron desktop shell for Windows.
 
-## Included engines
+## Included calendar systems
 
-- **Bangladesh National Calendar** (`src/engines/bd-national/`): year-wise national event data, event loading, validation, filtering, duplicate detection and source provenance.
-- **Bangladesh Bengali Calendar** (`src/engines/bd-bengali/`): deterministic Gregorian ↔ Bengali date conversion using Bangladesh's revised 2019 Bangla Academy calendar rules.
-- **India Bengali Calendar** (`src/engines/india-bengali/`): independent West Bengal-style solar Bangabda conversion and Meeus-based sunrise Panchang calculations using a Lahiri/Chitrapaksha approximation.
-- **ISKCON Mayapur Calendar** (`src/engines/iskcon-mayapur/`): independent Meeus-based astronomy, local sunrise/arunodaya, conservative Vaishnava observance evaluator and source-verified Mayapur annual festival/Ekadashi reference records for March 2026–March 2027.
+- **Bangladesh National Calendar** (`bd-national`): government/national events and holidays, anchored to Gregorian dates.
+- **Bangladesh Bengali Calendar** (`bd-bengali`): Gregorian ↔ Bengali conversion using Bangladesh's revised 2019 Bangla Academy calendar.
+- **India Bengali Calendar** (`india-bengali`): separate West Bengal-style solar Bangabda conversion and Meeus-based Panchang calculations.
+- **ISKCON Mayapur Calendar** (`iskcon-mayapur`): independent Mayapur Panchang, sunrise/sunset and Vaishnava observances.
 
-## Install, build and test
+The four engines remain independent. The UI language (Bengali/English) is separate from calendar selection. Missing capabilities are shown as unavailable rather than inferred.
 
-```bash
+## Windows development
+
+Run these commands in PowerShell from the project folder:
+
+```powershell
 npm install
 npm run typecheck
 npm test
-npm run build
+npm run electron:dev
 ```
 
-## Structure
+This opens the MultiCal desktop window while Vite serves the renderer. The original browser workflow remains available with `npm run dev`.
 
-```text
-src/
-├── core/types/                  # Shared calendar contracts
-├── data-model/                  # Unified date/day types and engine normalizers
-├── integration/                 # Registry, adapters and CalendarManager
-└── engines/
-    ├── bd-national/             # Bangladesh national events
-    ├── bd-bengali/              # Bangladesh revised Bengali date conversion
-    ├── india-bengali/           # West Bengal solar calendar and Panchang
-    └── iskcon-mayapur/          # Vaishnava astronomy, observances and references
+## Windows packaging
 
-tests/calendar/
-├── bd-national/
-├── bd-bengali/
-├── india-bengali/
-└── iskcon-mayapur/
+Build both the installer and portable executable:
 
-docs/
+```powershell
+npm run build:desktop
 ```
 
-See the engine-specific documentation in `docs/`, plus `docs/DATA_SOURCES.md`, `docs/IMPLEMENTATION.md` and `docs/TEST_REPORT.md`.
+Or build them separately:
 
-**Accuracy note:** ISKCON Mayapur annual observance dates in the bundled reference period are sourced from the official Mayapur calendar. Astronomical calculations outside that reference are analytical and marked unverified; this package does not claim to reproduce the official GBC Calendar Research Committee/GCAL software.
+```powershell
+npm run build:installer
+npm run build:portable
+```
 
-## Unified integration API (Phase 5A)
+Artifacts are written to `release/`:
+- `MultiCal-0.2.0-x64.exe` — NSIS installer
+- `MultiCal-0.2.0-portable-x64.exe` — portable executable
 
-`src/integration/` provides `CalendarManager`, a four-engine registry, typed capabilities, engine adapters and Bengali/English metadata formatting. See [docs/CALENDAR_INTEGRATION.md](docs/CALENDAR_INTEGRATION.md) for the capability matrix and examples. The facade exposes only operations actually supported by each engine; selecting a calendar is independent of changing the display language.
+The exact artifact names follow the package version and architecture. Build Windows installers on Windows for the most predictable result.
 
-## Unified date data model (Phase 5B)
+## Desktop security
 
-`src/data-model/` normalizes actual results from all four engines into typed `CalendarDateModel` and `UnifiedCalendarDay` values. Gregorian date, engine identity, bilingual labels and provenance are retained; native calendar fields, Panchang and solar times remain optional when an engine does not supply them. Bangladesh's revised Bengali calendar and West Bengal Panjika remain distinct. See [docs/UNIFIED_DATE_MODEL.md](docs/UNIFIED_DATE_MODEL.md) for the normalization API, validation rules and field semantics.
+The Electron main process is in `electron/main.cjs`. Renderer Node integration is disabled, context isolation and sandboxing are enabled, and no preload bridge is exposed because the current UI does not need privileged desktop APIs. External HTTP(S) links are opened in the system browser; renderer-created windows are denied. The packaged app loads `dist/index.html` from its own application directory.
+
+## Offline behavior and known data coverage
+
+Calendar calculations and bundled datasets are local and work without an internet connection wherever data is available in the repository. The optional BanglaDateToday validation requires internet; if unavailable, the internal Bangladesh Bengali conversion remains authoritative.
+
+Existing data limitations remain unchanged: Bangladesh national event data currently covers 2026–2027; the Bengali calendar engines and Mayapur astronomical/observance calculations retain their documented coverage and precision limitations. Some official/source URLs are references and naturally require internet when opened.
+
+## Converter API
+
+`src/application/calendar-service.ts` provides `getCalendarDay(...)` and `getCalendarMonth(...)`, backed by the existing `CalendarManager`, registry, engine APIs and Phase 5B normalizers.
+
+Bangladesh Bengali dates can optionally be compared against BanglaDateToday. External results are comparison-only and never overwrite the internal engine result. See [docs/WORKING_CONVERTER_UI.md](docs/WORKING_CONVERTER_UI.md).
+
+## Baseline
+
+This deliverable starts from **Phase 5B** (four engines + Phase 5A integration + Phase 5B unified date model). **Phase 5C is not included.** Existing engine calculations and Phase 5A/5B modules are preserved.

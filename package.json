@@ -1,14 +1,74 @@
 {
-  "name": "multical-bd-national-engine",
+  "name": "multical-calendar-app",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.json && vite build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test tests/calendar/*/*.test.mjs tests/integration/*.test.mjs"
+    "test": "tsc -p tsconfig.json && node --test tests/calendar/*/*.test.mjs tests/integration/*.test.mjs tests/application/*.test.mjs tests/desktop/*.test.mjs",
+    "electron:dev": "concurrently -k \"vite --host 127.0.0.1 --port 5173 --strictPort\" \"wait-on http://127.0.0.1:5173 && electron .\"",
+    "electron:start": "electron .",
+    "build:desktop": "npm run build && electron-builder --win nsis portable",
+    "build:installer": "npm run build && electron-builder --win nsis",
+    "build:portable": "npm run build && electron-builder --win portable"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.3.5",
+    "electron": "^40.0.0",
+    "electron-builder": "^26.0.12",
+    "concurrently": "^9.2.1",
+    "wait-on": "^8.0.3"
+  },
+  "main": "electron/main.cjs",
+  "build": {
+    "appId": "com.multical.calendar",
+    "productName": "MultiCal",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MultiCal"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable-${arch}.${ext}"
+    }
   }
 }
