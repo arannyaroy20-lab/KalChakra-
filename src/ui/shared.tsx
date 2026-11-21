@@ -3,7 +3,7 @@ import type { DisplayLanguage } from "../integration/types.js";
 import { ui } from "./i18n.js";
 
 export type DayEvent = UserCalendarDay["events"][number];
-export type IconName = "left" | "right" | "sunrise" | "sunset" | "moon" | "star" | "yoga" | "karana" | "sun" | "moonTheme" | "check" | "alert" | "external" | "cal" | "layers" | "grid" | "list" | "flag" | "om" | "home" | "sidebar" | "menu" | "close" | "sparkle";
+export type IconName = "left" | "right" | "sunrise" | "sunset" | "afternoon" | "night" | "moon" | "star" | "yoga" | "karana" | "sun" | "moonTheme" | "check" | "alert" | "external" | "cal" | "layers" | "grid" | "list" | "flag" | "om" | "home" | "sidebar" | "menu" | "close" | "sparkle" | "settings" | "agendaBook" | "heart" | "cake" | "book" | "compass" | "party" | "briefcase" | "pulse" | "prayer" | "users" | "bell" | "plus" | "trash" | "edit" | "grip" | "up" | "down" | "clock" | "repeat";
 
 export const todayIso = () => {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dhaka", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
@@ -55,6 +55,8 @@ export const Icon = ({ name }: { name: IconName }) => {
     case "right": return <svg {...p}><path d="m9 18 6-6-6-6" /></svg>;
     case "sunrise": return <svg {...p}><path d="M12 3v4M5.6 8.6l2.2 2.2M18.4 8.6l-2.2 2.2M3 17h18M7 17a5 5 0 0 1 10 0M8 21h8" /></svg>;
     case "sunset": return <svg {...p}><path d="M12 9V4m0 0-2 2m2-2 2 2M5.6 10.6l2.2 2.2M18.4 10.6l-2.2 2.2M3 18h18M7 18a5 5 0 0 1 10 0M8 21h8" /></svg>;
+    case "afternoon": return <svg {...p}><path d="M3 17h18M7 17a5 5 0 0 1 10 0M12 6v2M5.5 10.5l1.5 1.5M18.5 10.5 17 12" /></svg>;
+    case "night": return <svg {...p}><path d="M19 14.5A7.5 7.5 0 1 1 9.5 5 6 6 0 0 0 19 14.5Z" /><path d="M16.5 5v2.5M15.25 6.25h2.5M20 9.5h.01" /></svg>;
     case "moon": return <svg {...p}><path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5Z" /></svg>;
     case "star": return <svg {...p}><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7Z" /></svg>;
     case "yoga": return <svg {...p}><circle cx="12" cy="12" r="8.5" /><path d="M12 3.5v17M3.5 12h17" /></svg>;
@@ -75,5 +77,25 @@ export const Icon = ({ name }: { name: IconName }) => {
     case "sparkle": return <svg {...p}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" /></svg>;
     case "flag": return <svg {...p}><path d="M5 21V4m0 0h11l-2 4 2 4H5" /></svg>;
     case "om": return <svg {...p}><path d="M12 3c-2 3-2 6 0 9s2 6 0 9M5 12c3-2 6-2 9 0s5 2 7 0" /></svg>;
+    case "settings": return <svg {...p}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></svg>;
+    case "agendaBook": return <svg {...p}><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M9 9h6M9 13h4M8 2v4M16 2v4" /></svg>;
+    case "heart": return <svg {...p}><path d="M19.5 12.6 12 20l-7.5-7.4a4.8 4.8 0 0 1 6.8-6.8l.7.7.7-.7a4.8 4.8 0 0 1 6.8 6.8Z" /></svg>;
+    case "cake": return <svg {...p}><path d="M4 15.5a2.5 2.5 0 0 1 2.5-2.5h11a2.5 2.5 0 0 1 2.5 2.5V20H4v-4.5Z" /><path d="M4 16.5c1.5 1 3 1 4 0s2.5-1 4 0 3 1 4 0 2.5-1 4 0M12 7v6M8 10v3M16 10v3M12 4.2c.6.8.6 1.5 0 2-.6-.5-.6-1.2 0-2Z" /></svg>;
+    case "book": return <svg {...p}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5A2.5 2.5 0 0 1 20 22V5.5Z" /></svg>;
+    case "compass": return <svg {...p}><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z" /></svg>;
+    case "party": return <svg {...p}><path d="M4 20 9.5 6.5l8 8L4 20Z" /><path d="M15 4v2M19 8h2M17.5 5.5 19 4M13.5 9.5c1-1.5 3-1.5 4 0" /></svg>;
+    case "briefcase": return <svg {...p}><rect x="3.5" y="7" width="17" height="13" rx="2.5" /><path d="M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2M3.5 12h17" /></svg>;
+    case "pulse": return <svg {...p}><path d="M3 12h4l2.5-6 4 12 2.5-6h5" /></svg>;
+    case "prayer": return <svg {...p}><path d="M12 4c1.2 1.6 1.2 3.2 0 4.5-1.2-1.3-1.2-2.9 0-4.5ZM5 13c0 4 3 6.5 7 6.5s7-2.5 7-6.5H5ZM4 20h16" /></svg>;
+    case "users": return <svg {...p}><circle cx="9.5" cy="8" r="3" /><path d="M4 19a5.5 5.5 0 0 1 11 0M16 7a2.5 2.5 0 0 1 0 5M18 19a4 4 0 0 0-2.5-3.7" /></svg>;
+    case "bell": return <svg {...p}><path d="M6 15.5h12l-1.5-2V10a4.5 4.5 0 0 0-9 0v3.5l-1.5 2ZM10 18.5a2 2 0 0 0 4 0" /></svg>;
+    case "plus": return <svg {...p}><path d="M12 5v14M5 12h14" /></svg>;
+    case "trash": return <svg {...p}><path d="M4 7h16M9 7V4.5h6V7M7 7l1 13h8l1-13M10 11v5M14 11v5" /></svg>;
+    case "edit": return <svg {...p}><path d="M4 20h4l10.5-10.5a2 2 0 0 0-2.8-2.8L5 17.2V20Z" /></svg>;
+    case "grip": return <svg {...p}><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01" /></svg>;
+    case "up": return <svg {...p}><path d="m18 15-6-6-6 6" /></svg>;
+    case "down": return <svg {...p}><path d="m6 9 6 6 6-6" /></svg>;
+    case "clock": return <svg {...p}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></svg>;
+    case "repeat": return <svg {...p}><path d="M17 3l3 3-3 3M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3M20 13v2a3 3 0 0 1-3 3H4" /></svg>;
   }
 };

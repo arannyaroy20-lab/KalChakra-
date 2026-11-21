@@ -1,17 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { formatSelectedCalendarDate, getCalendarDay, getCalendarMonth, listCalendarOptions, type UserCalendarDay } from "../application/calendar-service.js";
+import { formatSelectedCalendarDate, getCalendarDay, getCalendarMonth, listCalendarOptions, type HinduCalendarMode, type UserCalendarDay } from "../application/calendar-service.js";
 import { validateBangladeshBengaliDate, type BanglaDateValidation } from "../validation/bangla-date-today.js";
 import type { CalendarId, DisplayLanguage } from "../integration/types.js";
 import { copy, ENGINES, monthNames, ui, weekdays } from "./i18n.js";
-import { chipClass, eventSource, eventStatus, eventTitle, holidayLabel, holidayTier, Icon, monthSpans, numFor, shortDate, sortEvents, todayIso, toBn, type DayEvent, type MonthSpan } from "./shared.js";
+import { chipClass, eventTitle, holidayLabel, holidayTier, Icon, monthSpans, numFor, shortDate, sortEvents, todayIso, type DayEvent, type IconName, type MonthSpan } from "./shared.js";
+import { formatAgendaTime, getAgendaType, loadAgendas, resolveAgendaComment, resolveHeroAgendas, saveAgendas, type PersonalAgenda } from "./agendas.js";
+import { MyAgendaView } from "./MyAgendaView.js";
 import "./styles.css";
 
-type View = "home" | "calendar" | "all" | "agenda";
+type View = "home" | "calendar" | "all" | "agenda" | "my-agenda";
 type Theme = "light" | "dark";
-type Accent = "clay" | "green" | "blue" | "mint" | "purple" | "red";
-const ACCENTS: { id: Accent; color: string }[] = [{ id: "clay", color: "#c4623f" }, { id: "green", color: "#1f5b4a" }, { id: "blue", color: "#2f6fb0" }, { id: "mint", color: "#2aa386" }, { id: "purple", color: "#6b4fb5" }, { id: "red", color: "#c23a3a" }];
-const initialAccent = (): Accent => { try { const v = localStorage.getItem("multical-accent"); if (ACCENTS.some(a => a.id === v)) return v as Accent; } catch { /* storage unavailable */ } return "clay"; };
+type Accent = "mint" | "green" | "blue" | "clay" | "purple" | "red";
+const ACCENTS: { id: Accent; color: string }[] = [{ id: "mint", color: "#17866d" }, { id: "green", color: "#1f5b4a" }, { id: "blue", color: "#2f6fb0" }, { id: "clay", color: "#c4623f" }, { id: "purple", color: "#6b4fb5" }, { id: "red", color: "#c23a3a" }];
+const initialAccent = (): Accent => { try { const v = localStorage.getItem("multical-accent"); if (ACCENTS.some(a => a.id === v)) return v as Accent; } catch { /* storage unavailable */ } return "mint"; };
+const initialHinduMode = (): HinduCalendarMode => { try { const v = localStorage.getItem("multical-hindu-mode"); if (v === "sanatan" || v === "iskcon") return v; } catch { /* storage unavailable */ } return "sanatan"; };
 type Layers = Record<CalendarId, boolean>;
 type AllDays = Partial<Record<CalendarId, UserCalendarDay[]>>;
 
@@ -20,7 +23,10 @@ const initialTheme = (): Theme => {
   try { const stored = localStorage.getItem("multical-theme"); if (stored === "light" || stored === "dark") return stored; } catch { /* storage unavailable */ }
   return typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 };
-const engineShort = (id: CalendarId, language: DisplayLanguage) => ENGINES.find(e => e.id === id)!.short[language];
+const engineShort = (id: CalendarId, language: DisplayLanguage, hinduMode: HinduCalendarMode = "sanatan") =>
+  id === "iskcon-mayapur" ? (hinduMode === "sanatan" ? ui[language].modeSanatan : ui[language].modeIskcon) : ENGINES.find(e => e.id === id)!.short[language];
+const engineName = (id: CalendarId, language: DisplayLanguage, hinduMode: HinduCalendarMode = "sanatan") =>
+  id === "iskcon-mayapur" && hinduMode === "sanatan" ? ui[language].modeSanatan : (calendarOptions.find(c => c.id === id)?.name[language] ?? engineShort(id, language, hinduMode));
 
 /** One strip that shows the Bangla months and the Gregorian dates they cover, so nothing needs scrolling to compare. */
 function SpanBar({ spans, language, label, engine }: { spans: MonthSpan[]; language: DisplayLanguage; label?: string; engine: CalendarId }) {
@@ -73,6 +79,16 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [accent, setAccent] = useState<Accent>(initialAccent);
+  const [hinduMode, setHinduMode] = useState<HinduCalendarMode>(initialHinduMode);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [agendas, setAgendas] = useState<PersonalAgenda[]>(loadAgendas);
+  const [desktopReady, setDesktopReady] = useState<boolean>(() => !window.multiCalDesktop?.isDesktop);
+  const [nowMinutes, setNowMinutes] = useState<number>(() => {
+    const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
+    const hh = Number(parts.find(p => p.type === "hour")?.value ?? 0);
+    const mm = Number(parts.find(p => p.type === "minute")?.value ?? 0);
+    return hh * 60 + mm;
+  });
   const t = copy[language];
   const u = ui[language];
   const num = numFor(language);
@@ -94,37 +110,37 @@ function App() {
     let active = true;
     setError(null); setValidation(null);
     try {
-      const result = getCalendarMonth(year, month, calendarId, language);
+      const result = getCalendarMonth(year, month, calendarId, language, { hinduMode });
       if (active) setMonthDays(result.days);
     } catch (e) {
       if (active) { setError(e instanceof Error ? e.message : String(e)); setMonthDays([]); setSelectedDay(null); }
     }
     return () => { active = false; };
-  }, [view, year, month, calendarId, language]);
+  }, [view, year, month, calendarId, language, hinduMode]);
 
   useEffect(() => {
     if (view !== "calendar") return;
     const fromMonth = monthDays.find(item => item.date.gregorianDate === date);
     if (fromMonth) { setSelectedDay(fromMonth); return; }
-    try { setSelectedDay(getCalendarDay(date, calendarId, language)); }
+    try { setSelectedDay(getCalendarDay(date, calendarId, language, { hinduMode })); }
     catch (e) { setError(e instanceof Error ? e.message : String(e)); setSelectedDay(null); }
-  }, [view, date, calendarId, language, monthDays]);
+  }, [view, date, calendarId, language, hinduMode, monthDays]);
 
-  // All-engines month (All engines + Agenda views): every engine's data computed locally, off the render path.
+  // All-engines month (All engines + Agenda + Home views): every engine's data computed locally, off the render path.
   useEffect(() => {
-    if (view === "calendar") return;
+    if (view === "calendar" || view === "my-agenda") return;
     let active = true;
     setAllLoading(true); setError(null);
     const handle = setTimeout(() => {
       try {
         const out: AllDays = {};
-        for (const option of calendarOptions) out[option.id] = getCalendarMonth(year, month, option.id, language).days;
+        for (const option of calendarOptions) out[option.id] = getCalendarMonth(year, month, option.id, language, { hinduMode }).days;
         if (active) setAllDays(out);
       } catch (e) { if (active) { setError(e instanceof Error ? e.message : String(e)); setAllDays({}); } }
       finally { if (active) setAllLoading(false); }
     }, 0);
     return () => { active = false; clearTimeout(handle); };
-  }, [view, year, month, language]);
+  }, [view, year, month, language, hinduMode]);
 
   useEffect(() => {
     if (view !== "calendar" || calendarId !== "bd-bengali") { setValidation(null); return; }
@@ -134,9 +150,60 @@ function App() {
   }, [view, calendarId, date]);
 
   useEffect(() => { document.documentElement.dataset.accent = accent; try { localStorage.setItem("multical-accent", accent); } catch { /* storage unavailable */ } }, [accent]);
+  useEffect(() => { try { localStorage.setItem("multical-hindu-mode", hinduMode); } catch { /* storage unavailable */ } }, [hinduMode]);
   useEffect(() => { try { localStorage.setItem("multical-sidebar", collapsed ? "collapsed" : "open"); } catch { /* storage unavailable */ } }, [collapsed]);
+  useEffect(() => {
+    const desktop = window.multiCalDesktop;
+    if (!desktop?.isDesktop) return;
+    let active = true;
+    desktop.loadAgendas().then(diskList => {
+      if (!active) return;
+      if (Array.isArray(diskList) && diskList.length > 0) {
+        setAgendas(diskList);
+      } else {
+        const local = loadAgendas();
+        if (local.length > 0) void desktop.saveAgendas(local);
+      }
+      setDesktopReady(true);
+    }).catch(() => {
+      if (active) setDesktopReady(true);
+    });
+    return () => { active = false; };
+  }, []);
+  useEffect(() => {
+    saveAgendas(agendas);
+    if (desktopReady && window.multiCalDesktop?.isDesktop) {
+      void window.multiCalDesktop.saveAgendas(agendas);
+    }
+  }, [agendas, desktopReady]);
+  useEffect(() => {
+    window.multiCalDesktop?.setLanguage(language);
+  }, [language]);
+  useEffect(() => {
+    const unsubscribe = window.multiCalDesktop?.onOpenMyAgenda(() => {
+      setViewRaw("my-agenda");
+      setDrawer(false);
+    });
+    return () => { unsubscribe?.(); };
+  }, []);
+  useEffect(() => {
+    const tick = () => {
+      const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
+      const hh = Number(parts.find(p => p.type === "hour")?.value ?? 0);
+      const mm = Number(parts.find(p => p.type === "minute")?.value ?? 0);
+      setNowMinutes(hh * 60 + mm);
+    };
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSettingsOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [settingsOpen]);
 
-  // Home: events of the following month (National + ISKCON) for the "Coming up" list.
+  // Home: events of the following month (National + Sanatan/ISKCON) for the "Coming up" list.
   useEffect(() => {
     if (view !== "home") return;
     let active = true;
@@ -144,12 +211,12 @@ function App() {
       try {
         const next = new Date(Date.UTC(year, month, 1));
         const y = next.getUTCFullYear(); const m = next.getUTCMonth() + 1;
-        const days = (["bd-national", "iskcon-mayapur"] as const).flatMap(id => getCalendarMonth(y, m, id, language).days);
+        const days = (["bd-national", "iskcon-mayapur"] as const).flatMap(id => getCalendarMonth(y, m, id, language, { hinduMode }).days);
         if (active) setNextDays(days);
       } catch { if (active) setNextDays([]); }
     }, 0);
     return () => { active = false; clearTimeout(handle); };
-  }, [view, year, month, language]);
+  }, [view, year, month, language, hinduMode]);
 
   const grid = useMemo(() => [...Array(firstWeekday).fill(null), ...monthDays], [firstWeekday, monthDays]);
   const allGrid = useMemo(() => [...Array(firstWeekday).fill(null), ...Array.from({ length: new Date(Date.UTC(year, month, 0)).getUTCDate() }, (_, i) => i + 1)], [firstWeekday, year, month]);
@@ -166,7 +233,7 @@ function App() {
     if (action) { e.preventDefault(); action(); }
   };
 
-  const calendarName = calendarOptions.find(c => c.id === calendarId)?.name[language];
+  const calendarName = selectedDay?.calendarName[language] ?? engineName(calendarId, language, hinduMode);
   const isNativeCalendar = calendarId === "bd-bengali" || calendarId === "india-bengali";
   const spans = useMemo(() => view === "calendar" && isNativeCalendar ? monthSpans(monthDays, language) : [], [view, isNativeCalendar, monthDays, language]);
   const allSpans = useMemo(() => ({
@@ -202,11 +269,30 @@ function App() {
   </div>;
 
   const heroDay = view === "calendar" ? selectedDay ?? undefined : (ENGINES.map(e => allDay(e.id, day)).find(Boolean));
-  const titles: Record<View, string> = { home: u.home, calendar: u.viewCalendar, all: u.viewAll, agenda: u.viewAgenda };
-  const hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Dhaka" }).format(new Date()));
-  const greeting = hour < 5 ? u.gNight : hour < 12 ? u.gMorning : hour < 17 ? u.gNoon : hour < 20 ? u.gEvening : u.gNight;
-  const navItems: { id: View; label: string; icon: "home" | "cal" | "layers" | "list" }[] = [
-    { id: "home", label: u.home, icon: "home" }, { id: "calendar", label: u.viewCalendar, icon: "cal" }, { id: "all", label: u.viewAll, icon: "layers" }, { id: "agenda", label: u.viewAgenda, icon: "list" }
+  const titles: Record<View, string> = { home: u.home, calendar: u.viewCalendar, all: u.viewAll, agenda: u.viewAgenda, "my-agenda": u.myAgenda };
+  const hour = Math.floor(nowMinutes / 60);
+  const timeGreeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean } =
+    hour >= 5 && hour < 12 ? { icon: "sunrise", title: u.gMorning, note: u.cMorning }
+    : hour >= 12 && hour < 16 ? { icon: "sun", title: u.gNoon, note: u.cNoon }
+    : hour >= 16 && hour < 18 ? { icon: "afternoon", title: u.gAfternoon, note: u.cAfternoon }
+    : hour >= 18 && hour < 20 ? { icon: "sunset", title: u.gEvening, note: u.cEvening }
+    : { icon: "night", title: u.gNight, note: u.cNight };
+  const heroAgenda = useMemo(() => resolveHeroAgendas(agendas, today, nowMinutes), [agendas, today, nowMinutes]);
+  const greeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean } = heroAgenda.main
+    ? {
+        icon: getAgendaType(heroAgenda.main.type).icon,
+        title: heroAgenda.main.title,
+        note: resolveAgendaComment(heroAgenda.main, language),
+        ...(!heroAgenda.main.isAllDay ? { subMeta: formatAgendaTime(heroAgenda.main, language) } : {}),
+        hasReminder: heroAgenda.main.reminder
+      }
+    : timeGreeting;
+  const navItems: { id: View; label: string; icon: IconName }[] = [
+    { id: "home", label: u.home, icon: "home" },
+    { id: "calendar", label: u.viewCalendar, icon: "cal" },
+    { id: "all", label: u.viewAll, icon: "layers" },
+    { id: "agenda", label: u.viewAgenda, icon: "list" },
+    { id: "my-agenda", label: u.myAgenda, icon: "agendaBook" }
   ];
   const pickCalendar = (id: CalendarId) => { setCalendarId(id); setViewRaw("calendar"); setDrawer(false); };
 
@@ -221,9 +307,9 @@ function App() {
   const daysAway = (isoDate: string) => { const n = Math.round((Date.parse(isoDate) - Date.parse(today)) / 86_400_000); return n === 1 ? u.tomorrow : `${num(n)} ${u.inDays}`; };
 
   const switcher = view === "calendar"
-    ? <div className="mini-seg" role="tablist" aria-label={t.system}>{calendarOptions.map(c => <button key={c.id} role="tab" aria-selected={c.id === calendarId} className={`${c.id === calendarId ? "active" : ""} eng-${c.id}`} onClick={() => setCalendarId(c.id as CalendarId)}><i className="eng-dot" />{engineShort(c.id as CalendarId, language)}</button>)}</div>
+    ? <div className="mini-seg" role="tablist" aria-label={t.system}>{calendarOptions.map(c => <button key={c.id} role="tab" aria-selected={c.id === calendarId} className={`${c.id === calendarId ? "active" : ""} eng-${c.id}`} onClick={() => setCalendarId(c.id as CalendarId)}><i className="eng-dot" />{engineShort(c.id as CalendarId, language, hinduMode)}</button>)}</div>
     : view === "all" || view === "agenda"
-      ? <div className="mini-seg" role="group" aria-label={u.layers}>{ENGINES.map(e => <button key={e.id} className={`${layers[e.id] ? "active" : "off"} eng-${e.id}`} aria-pressed={layers[e.id]} onClick={() => setLayers({ ...layers, [e.id]: !layers[e.id] })}><i className="eng-dot" />{e.short[language]}</button>)}</div>
+      ? <div className="mini-seg" role="group" aria-label={u.layers}>{ENGINES.map(e => <button key={e.id} className={`${layers[e.id] ? "active" : "off"} eng-${e.id}`} aria-pressed={layers[e.id]} onClick={() => setLayers({ ...layers, [e.id]: !layers[e.id] })}><i className="eng-dot" />{engineShort(e.id, language, hinduMode)}</button>)}</div>
       : null;
 
   return <div className={`app-shell ${collapsed ? "collapsed" : ""} ${drawer ? "drawer-open" : ""}`}>
@@ -236,17 +322,9 @@ function App() {
       <nav className="side-nav">
         {navItems.map(n => <button key={n.id} className={`side-item ${view === n.id ? "active" : ""}`} onClick={() => setView(n.id)} title={n.label}><Icon name={n.icon} /><span>{n.label}</span></button>)}
         <div className="side-section"><span>{u.calendars}</span></div>
-        {calendarOptions.map(c => <button key={c.id} className={`side-item sub eng-${c.id} ${view === "calendar" && calendarId === c.id ? "active" : ""}`} onClick={() => pickCalendar(c.id as CalendarId)} title={c.name[language]}><i className="eng-dot" /><span>{engineShort(c.id as CalendarId, language)}</span></button>)}
+        {calendarOptions.map(c => <button key={c.id} className={`side-item sub eng-${c.id} ${view === "calendar" && calendarId === c.id ? "active" : ""}`} onClick={() => pickCalendar(c.id as CalendarId)} title={engineName(c.id as CalendarId, language, hinduMode)}><i className="eng-dot" /><span>{engineShort(c.id as CalendarId, language, hinduMode)}</span></button>)}
       </nav>
       <div className="side-foot">
-        <div className="swatches" role="group" aria-label={u.accent}>{ACCENTS.map(a => <button key={a.id} className={`swatch ${accent === a.id ? "active" : ""}`} style={{ "--sw": a.color }} aria-pressed={accent === a.id} aria-label={a.id} title={a.id} onClick={() => setAccent(a.id)} />)}</div>
-        <div className="side-row">
-          <div className="mini-seg lang" role="group" aria-label={t.language}>
-            <button className={language === "bn" ? "active" : ""} aria-pressed={language === "bn"} onClick={() => setLanguage("bn")}>বাং</button>
-            <button className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")}>EN</button>
-          </div>
-          <button className="icon-button small" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title={u.theme} aria-label={u.theme}><Icon name={theme === "dark" ? "sun" : "moonTheme"} /></button>
-        </div>
         <a className="side-link" href="https://www.bangladatetoday.com/bangla-date-api" target="_blank" rel="noreferrer">BanglaDateToday <Icon name="external" /></a>
       </div>
     </aside>
@@ -258,23 +336,99 @@ function App() {
         <h2 className="page-title">{titles[view]}</h2>
         <div className="top-spacer" />
         {switcher}
+        <div className="top-actions">
+          <div className="mini-seg lang" role="group" aria-label={t.language}>
+            <button className={language === "bn" ? "active" : ""} aria-pressed={language === "bn"} onClick={() => setLanguage("bn")}>বাং</button>
+            <button className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")}>EN</button>
+          </div>
+          <button className="icon-button small" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title={u.theme} aria-label={u.theme}><Icon name={theme === "dark" ? "sun" : "moonTheme"} /></button>
+          <div className="settings-anchor">
+            <button className={`icon-button small ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(v => !v)} title={u.settings} aria-label={u.settings} aria-expanded={settingsOpen} aria-haspopup="dialog"><Icon name="settings" /></button>
+            {settingsOpen && <>
+              <div className="settings-backdrop" onClick={() => setSettingsOpen(false)} />
+              <div className="settings-panel" role="dialog" aria-label={u.settings}>
+                <div className="settings-head">
+                  <h3>{u.settings}</h3>
+                  <button className="icon-button small" onClick={() => setSettingsOpen(false)} aria-label={u.close}><Icon name="close" /></button>
+                </div>
+                <div className="settings-group">
+                  <span className="settings-label">{t.language}</span>
+                  <div className="mini-seg full" role="group" aria-label={t.language}>
+                    <button className={language === "bn" ? "active" : ""} aria-pressed={language === "bn"} onClick={() => setLanguage("bn")}>বাংলা</button>
+                    <button className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")}>English</button>
+                  </div>
+                </div>
+                <div className="settings-group">
+                  <span className="settings-label">{u.themeMode}</span>
+                  <div className="mini-seg full" role="group" aria-label={u.themeMode}>
+                    <button className={theme === "light" ? "active" : ""} aria-pressed={theme === "light"} onClick={() => setTheme("light")}><Icon name="sun" />{u.light}</button>
+                    <button className={theme === "dark" ? "active" : ""} aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}><Icon name="moonTheme" />{u.dark}</button>
+                  </div>
+                </div>
+                <div className="settings-group">
+                  <span className="settings-label">{u.hinduMode}</span>
+                  <div className="mini-seg full" role="group" aria-label={u.hinduMode}>
+                    <button className={hinduMode === "sanatan" ? "active" : ""} aria-pressed={hinduMode === "sanatan"} onClick={() => setHinduMode("sanatan")}>{u.modeSanatan}</button>
+                    <button className={hinduMode === "iskcon" ? "active" : ""} aria-pressed={hinduMode === "iskcon"} onClick={() => setHinduMode("iskcon")}>{u.modeIskcon}</button>
+                  </div>
+                </div>
+                <div className="settings-group">
+                  <span className="settings-label">{u.accent}</span>
+                  <div className="swatches settings-swatches" role="group" aria-label={u.accent}>
+                    {ACCENTS.map(a => <button key={a.id} className={`swatch-chip ${accent === a.id ? "active" : ""}`} style={{ "--sw": a.color }} aria-pressed={accent === a.id} onClick={() => setAccent(a.id)}><i className="swatch-dot" /><span>{u.accents[a.id]}</span></button>)}
+                  </div>
+                </div>
+              </div>
+            </>}
+          </div>
+        </div>
       </header>
 
       {view === "home" && <main className="home">
         <section className="home-hero">
-          <span className="eyebrow"><Icon name="sparkle" /> {greeting}</span>
-          {heroDay && <>
-            <h1 className="hero-date"><span className="hero-day">{num(day)}</span><span className="hero-rest"><b>{heroDay.gregorian.weekday[language]}</b>{monthNames[language][month - 1]} {num(year)}</span></h1>
-            <div className="hero-dates">
-              {(["bd-bengali", "india-bengali"] as const).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`date-chip eng-${id}`}><i className="eng-dot" /><small>{engineShort(id, language)}</small><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
+          <div className="hero-top">
+            <div className="hero-main">
+              {heroDay ? <>
+                <h1 className="hero-date"><span className="hero-day">{num(day)}</span><span className="hero-rest"><b>{heroDay.gregorian.weekday[language]}</b>{monthNames[language][month - 1]} {num(year)}</span></h1>
+                <div className="hero-dates">
+                  {(["bd-bengali", "india-bengali"] as const).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`date-chip eng-${id}`} title={engineShort(id, language, hinduMode)}><i className="eng-dot" /><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
+                </div>
+              </> : <div className="loading-bar" role="status"><span />{u.calculating}</div>}
             </div>
-          </>}
-          {!heroDay && <div className="loading-bar" role="status"><span />{u.calculating}</div>}
+            <div className="hero-greeting">
+              <span className="greet-icon" aria-hidden="true"><Icon name={greeting.icon} /></span>
+              <strong className="greet-title">{greeting.title}</strong>
+              <span className="greet-note">
+                {greeting.hasReminder && <span className="greet-bell" aria-label={u.agendaReminder}><Icon name="bell" /></span>}
+                {greeting.subMeta && <em className="greet-time">{greeting.subMeta} · </em>}
+                {greeting.note}
+              </span>
+            </div>
+          </div>
           <div className="hero-actions">
             <button className="primary-button" onClick={() => setView("calendar")}><Icon name="cal" />{u.openCalendar}</button>
             <button className="ghost-button" onClick={() => setView("all")}><Icon name="layers" />{u.seeAll}</button>
           </div>
         </section>
+        {heroAgenda.remaining.length > 0 && <section className="info-card home-agendas">
+          <div className="section-heading">
+            <h2>{u.moreTodayAgendas}</h2>
+            <span className="count-badge">{num(heroAgenda.remaining.length)}</span>
+          </div>
+          <div className="home-agenda-list">
+            {heroAgenda.remaining.map(item => {
+              const typeMeta = getAgendaType(item.type);
+              return <button key={item.id} className="home-agenda-row" onClick={() => { setDate(today); setViewRaw("my-agenda"); }}>
+                <span className="agenda-type-icon"><Icon name={typeMeta.icon} /></span>
+                <span className="home-agenda-text">
+                  <strong>{item.title}</strong>
+                  <small>{formatAgendaTime(item, language)} · {resolveAgendaComment(item, language)}</small>
+                </span>
+                {item.reminder && <span className="reminder-tag" aria-label={u.agendaReminder}><Icon name="bell" /></span>}
+              </button>;
+            })}
+          </div>
+        </section>}
         <section className="info-card home-events">
           <div className="section-heading"><h2>{u.todayEvents}</h2><span className="count-badge">{num(homeEvents.length)}</span></div>
           {homeEvents.length ? <div className="event-list">{homeEvents.map((event, i) => <EventItem key={i} event={event} language={language} />)}</div> : <p className="empty-state"><Icon name="sparkle" />{u.noToday}</p>}
@@ -290,7 +444,9 @@ function App() {
         {error && <div className="error-banner" role="alert"><Icon name="alert" /><span>{error}</span></div>}
       </main>}
 
-      {view !== "home" && <main className="main-layout">
+      {view === "my-agenda" && <MyAgendaView agendas={agendas} onChange={setAgendas} date={date} onSelectDate={setDate} language={language} />}
+
+      {view !== "home" && view !== "my-agenda" && <main className="main-layout">
         <section className="primary-column">
           <div className="calendar-card">
             <div className="calendar-heading">
@@ -310,8 +466,8 @@ function App() {
 
             {view === "calendar" && spans.length > 0 && <SpanBar spans={spans} language={language} engine={calendarId} />}
             {view !== "calendar" && <div className="span-stack">
-              {layers["bd-bengali"] && <SpanBar spans={allSpans["bd-bengali"]} language={language} label={engineShort("bd-bengali", language)} engine="bd-bengali" />}
-              {layers["india-bengali"] && <SpanBar spans={allSpans["india-bengali"]} language={language} label={engineShort("india-bengali", language)} engine="india-bengali" />}
+              {layers["bd-bengali"] && <SpanBar spans={allSpans["bd-bengali"]} language={language} label={engineShort("bd-bengali", language, hinduMode)} engine="bd-bengali" />}
+              {layers["india-bengali"] && <SpanBar spans={allSpans["india-bengali"]} language={language} label={engineShort("india-bengali", language, hinduMode)} engine="india-bengali" />}
             </div>}
 
             {view === "calendar" && <div className="month-grid" role="grid" aria-label={monthLabel} onKeyDown={onGridKey}>
@@ -402,7 +558,7 @@ function App() {
               <div className="native-date">{selectedDateLabel}</div>
             </div>}
             {view !== "calendar" && <div className="native-list">
-              {(["bd-bengali", "india-bengali"] as const).filter(id => layers[id]).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`native-line eng-${id}`}><i className="eng-dot" /><span className="line-label">{engineShort(id, language)}</span><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
+              {(["bd-bengali", "india-bengali"] as const).filter(id => layers[id]).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`native-line eng-${id}`}><i className="eng-dot" /><span className="line-label">{engineShort(id, language, hinduMode)}</span><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
             </div>}
           </section>
 
@@ -431,7 +587,7 @@ function App() {
 
           {view !== "calendar" && ENGINES.filter(e => layers[e.id]).map(e => {
             const d = allDay(e.id, day);
-            if (!d) return <section key={e.id} className={`info-card engine-card eng-${e.id}`}><div className="engine-head"><i className="eng-dot" /><h2>{e.short[language]}</h2></div>{allLoading && <p className="empty-message">{u.calculating}</p>}</section>;
+            if (!d) return <section key={e.id} className={`info-card engine-card eng-${e.id}`}><div className="engine-head"><i className="eng-dot" /><h2>{engineShort(e.id, language, hinduMode)}</h2></div>{allLoading && <p className="empty-message">{u.calculating}</p>}</section>;
             return <section key={e.id} className={`info-card engine-card eng-${e.id}`}>
               <div className="engine-head"><i className="eng-dot" /><h2>{d.calendarName[language]}</h2>{d.events.length > 0 && <span className="count-badge">{num(d.events.length)}</span>}</div>
               {d.nativeDateAvailable && <div className="engine-native">{formatSelectedCalendarDate(d, language)}</div>}

@@ -9,12 +9,16 @@ import { gregorianToBengali as gregorianToIndiaBengali, getPanchangDay } from ".
 import type { GeoLocation } from "../engines/india-bengali/types.js";
 import { IskconMayapurCalendarEngine } from "../engines/iskcon-mayapur/iskcon-mayapur.engine.js";
 import type { MayapurLocation } from "../engines/iskcon-mayapur/types.js";
+import { getSanatanEventsForDate, localizeIskconEventName, localizeMayapurPanchangFields, type HinduCalendarMode } from "../engines/iskcon-mayapur/sanatan/sanatan-calendar.js";
 import { formatGregorianDate } from "../integration/formatting.js";
+
+export type { HinduCalendarMode };
 
 export interface CalendarServiceOptions {
   location?: Partial<GeoLocation & MayapurLocation>;
   timeZone?: string;
   signal?: AbortSignal;
+  hinduMode?: HinduCalendarMode;
 }
 
 export interface CalendarPanchang {
@@ -111,22 +115,30 @@ export function getCalendarDay(gregorianDate: string, calendarId: CalendarId | s
       break;
     }
     case "iskcon-mayapur": {
-      const engine = new IskconMayapurCalendarEngine(resolveMayapurLocation(options));
+      const location = resolveMayapurLocation(options);
+      const engine = new IskconMayapurCalendarEngine(location);
       const info = engine.getDay(gregorianDate);
-      const events = engine.getEvents(addDays(gregorianDate, -1), gregorianDate);
+      const mode: HinduCalendarMode = options?.hinduMode ?? "iskcon";
+      const events = mode === "sanatan"
+        ? getSanatanEventsForDate(gregorianDate, language, location)
+        : engine.getEvents(addDays(gregorianDate, -1), gregorianDate).map(ev => ({ ...ev, name: localizeIskconEventName(ev.name, language) }));
       day = normalizeIskconMayapurDay(info, events);
+      const localized = localizeMayapurPanchangFields(info, language);
       panchang = { engine: "iskcon-mayapur", sunrise: info.sunrise, sunset: info.sunset,
-        tithi: { name: info.tithi.name, startsAt: info.tithi.startsAt, endsAt: info.tithi.endsAt },
-        nakshatra: { name: info.nakshatra }, yoga: { name: info.yoga }, karana: { name: info.karana } };
+        tithi: { name: localized.tithiName, startsAt: info.tithi.startsAt, endsAt: info.tithi.endsAt },
+        nakshatra: { name: localized.nakshatra }, yoga: { name: localized.yoga }, karana: { name: localized.karana } };
       break;
     }
   }
   day.events = dedupeEvents(day.events);
   const [year, month, date] = gregorianDate.split("-").map(Number) as [number, number, number];
   const { panchang: _normalizedPanchang, ...dayWithoutPanchang } = day;
+  const calendarName = calendarId === "iskcon-mayapur" && options?.hinduMode === "sanatan"
+    ? { bn: "সনাতন পঞ্জিকা", en: "Sanatan Panchang" }
+    : metadata.name;
   const response: UserCalendarDay = {
     ...dayWithoutPanchang, displayLanguage: language,
-    calendarName: metadata.name,
+    calendarName,
     gregorian: { formatted: { bn: formatGregorianDate(gregorianDate, "bn"), en: formatGregorianDate(gregorianDate, "en") }, weekday: dayOfWeek(gregorianDate), year, month, day: date },
     nativeDateAvailable: calendarId === "bd-bengali" || calendarId === "india-bengali",
     availability: metadata.availability,

@@ -6,13 +6,16 @@ import path from "node:path";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const mainProcess = await readFile(path.join(projectRoot, "electron/main.cjs"), "utf8");
+const preloadScript = await readFile(path.join(projectRoot, "electron/preload.cjs"), "utf8");
 const packageJson = JSON.parse(await readFile(path.join(projectRoot, "package.json"), "utf8"));
 
 test("Electron main process uses isolated, non-Node renderer security settings", () => {
   assert.match(mainProcess, /contextIsolation:\s*true/);
   assert.match(mainProcess, /nodeIntegration:\s*false/);
   assert.match(mainProcess, /sandbox:\s*true/);
-  assert.doesNotMatch(mainProcess, /preload\s*:/);
+  assert.match(mainProcess, /preload:\s*path\.join\(__dirname,\s*"preload\.cjs"\)/);
+  assert.match(preloadScript, /contextBridge\.exposeInMainWorld\("multiCalDesktop"/);
+  assert.doesNotMatch(preloadScript, /exposeInMainWorld\([^,]+,\s*\{[\s\S]*\bipcRenderer\s*[,:}]/);
 });
 
 test("Electron loads Vite in development and packaged dist in production", () => {
