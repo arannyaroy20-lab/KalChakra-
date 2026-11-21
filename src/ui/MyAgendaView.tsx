@@ -12,6 +12,7 @@ import {
   type PersonalAgenda
 } from "./agendas.js";
 import { monthNames, ui, weekdays } from "./i18n.js";
+import { requestWebNotificationPermission } from "./notifications.js";
 import { Icon, numFor, shortDate, todayIso } from "./shared.js";
 
 interface MyAgendaViewProps {
@@ -173,6 +174,7 @@ export function MyAgendaView({ agendas, onChange, date, onSelectDate, language }
       ...(cleanComment ? { comment: cleanComment } : {})
     };
     onChange([...agendas, created]);
+    if (reminder) requestWebNotificationPermission();
     resetForm();
   };
 

@@ -39,8 +39,16 @@ export interface MultiCalDesktopBridge {
   isDesktop: boolean;
   loadAgendas: () => Promise<PersonalAgenda[]>;
   saveAgendas: (agendas: PersonalAgenda[]) => Promise<boolean>;
+  loadSchedules?: () => Promise<unknown[]>;
+  saveSchedules?: (schedules: unknown[]) => Promise<boolean>;
+  loadTasks?: () => Promise<{ tasks: unknown[]; goals: Record<string, number>; campaigns?: unknown[] }>;
+  saveTasks?: (payload: { tasks: unknown[]; goals: Record<string, number>; campaigns?: unknown[] }) => Promise<boolean>;
   setLanguage: (lang: DisplayLanguage) => void;
   onOpenMyAgenda: (callback: () => void) => () => void;
+  onOpenSchedule?: (callback: () => void) => () => void;
+  onOpenLiveTask?: (callback: () => void) => () => void;
+  onSchedulesUpdated?: (callback: (list: unknown[]) => void) => () => void;
+  onTasksUpdated?: (callback: (payload: { tasks: unknown[]; goals: Record<string, number>; campaigns?: unknown[] }) => void) => () => void;
 }
 
 declare global {

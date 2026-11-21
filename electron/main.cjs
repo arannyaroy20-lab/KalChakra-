@@ -2,13 +2,34 @@ const { app, BrowserWindow, ipcMain, Menu, nativeImage, Notification, shell, Tra
 const fs = require("node:fs/promises");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
+const {
+  buildWindowsGotItToastXml,
+  dhakaNow,
+  evaluateDesktopReminders,
+  parseGotItProtocolUrl
+} = require("./reminders.cjs");
 
 const isDevelopment = !app.isPackaged;
 const DEV_SERVER_URL = "http://127.0.0.1:5173";
 
+if (process.platform === "win32") {
+  app.setAppUserModelId("com.multical.calendar");
+  if (app.isPackaged) {
+    app.setAsDefaultProtocolClient("multical");
+  }
+}
+
+const gotSingleInstanceLock = app.requestSingleInstanceLock();
+if (!gotSingleInstanceLock) {
+  app.quit();
+}
+
 let mainWindow = null;
 let tray = null;
+let isQuitting = false;
 let agendasCache = [];
+let schedulesCache = [];
+let tasksStoreCache = { tasks: [], goals: {}, campaigns: [] };
 let uiLanguage = "bn";
 const notifiedToday = new Set();
 
@@ -16,9 +37,17 @@ function agendasFilePath() {
   return path.join(app.getPath("userData"), "agendas.json");
 }
 
-async function readAgendasFromDisk() {
+function schedulesFilePath() {
+  return path.join(app.getPath("userData"), "schedules.json");
+}
+
+function tasksFilePath() {
+  return path.join(app.getPath("userData"), "tasks.json");
+}
+
+async function readJsonArray(filePath) {
   try {
-    const raw = await fs.readFile(agendasFilePath(), "utf8");
+    const raw = await fs.readFile(filePath, "utf8");
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -26,87 +55,134 @@ async function readAgendasFromDisk() {
   }
 }
 
-async function writeAgendasToDisk(list) {
+async function writeJsonArray(filePath, list) {
   const safe = Array.isArray(list) ? list : [];
-  agendasCache = safe;
   await fs.mkdir(app.getPath("userData"), { recursive: true });
-  await fs.writeFile(agendasFilePath(), JSON.stringify(safe, null, 2), "utf8");
+  await fs.writeFile(filePath, JSON.stringify(safe, null, 2), "utf8");
+  return safe;
 }
 
-function dhakaNow() {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Dhaka",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23"
-  }).formatToParts(new Date());
-  const get = type => parts.find(p => p.type === type)?.value ?? "00";
-  const iso = `${get("year")}-${get("month")}-${get("day")}`;
-  const minutes = Number(get("hour")) * 60 + Number(get("minute"));
-  return { iso, minutes };
+async function readAgendasFromDisk() {
+  return readJsonArray(agendasFilePath());
 }
 
-function parseYmd(iso) {
-  const [y, m, d] = String(iso).split("-").map(Number);
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  return { y, m, d, wd: dt.getUTCDay() };
+async function writeAgendasToDisk(list) {
+  agendasCache = await writeJsonArray(agendasFilePath(), list);
 }
 
-function daysInMonthUtc(year, month) {
-  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+async function readSchedulesFromDisk() {
+  return readJsonArray(schedulesFilePath());
 }
 
-function matchesDate(agenda, isoDate) {
-  if (!agenda || typeof agenda.date !== "string" || isoDate < agenda.date) return false;
-  if (agenda.repeat === "once") return isoDate === agenda.date;
-  const start = parseYmd(agenda.date);
-  const target = parseYmd(isoDate);
-  if (agenda.repeat === "weekly") return target.wd === start.wd;
-  if (agenda.repeat === "monthly") return target.d === Math.min(start.d, daysInMonthUtc(target.y, target.m));
-  if (agenda.repeat === "yearly") return target.m === start.m && target.d === Math.min(start.d, daysInMonthUtc(target.y, target.m));
-  if (agenda.repeat === "weekdays") return Array.isArray(agenda.weekdays) && agenda.weekdays.includes(target.wd);
-  return false;
+async function writeSchedulesToDisk(list) {
+  schedulesCache = await writeJsonArray(schedulesFilePath(), list);
 }
 
-function checkAgendaReminders() {
-  if (!Notification.isSupported() || !agendasCache.length) return;
-  const { iso, minutes } = dhakaNow();
+async function readTasksFromDisk() {
+  try {
+    const raw = await fs.readFile(tasksFilePath(), "utf8");
+    const parsed = JSON.parse(raw);
+    return {
+      tasks: Array.isArray(parsed?.tasks) ? parsed.tasks : [],
+      goals: parsed?.goals && typeof parsed.goals === "object" && !Array.isArray(parsed.goals) ? parsed.goals : {},
+      campaigns: Array.isArray(parsed?.campaigns) ? parsed.campaigns : []
+    };
+  } catch {
+    return { tasks: [], goals: {}, campaigns: [] };
+  }
+}
 
-  for (const key of notifiedToday) {
-    if (!key.endsWith(`:${iso}`)) notifiedToday.delete(key);
+async function writeTasksToDisk(payload) {
+  const safe = {
+    tasks: Array.isArray(payload?.tasks) ? payload.tasks : [],
+    goals: payload?.goals && typeof payload.goals === "object" && !Array.isArray(payload.goals) ? payload.goals : {},
+    campaigns: Array.isArray(payload?.campaigns) ? payload.campaigns : []
+  };
+  await fs.mkdir(app.getPath("userData"), { recursive: true });
+  await fs.writeFile(tasksFilePath(), JSON.stringify(safe, null, 2), "utf8");
+  tasksStoreCache = safe;
+  return safe;
+}
+
+async function markScheduleDoneFromNotification(id, isoDate) {
+  const next = schedulesCache.map(item => {
+    if (!item || item.id !== id) return item;
+    const prev = Array.isArray(item.completedDates) ? item.completedDates : [];
+    if (prev.includes(isoDate)) return item;
+    return { ...item, completedDates: [...prev, isoDate] };
+  });
+  await writeSchedulesToDisk(next);
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send("multical:schedules-updated", schedulesCache);
+  }
+}
+
+function showOsNotification({ title, body, channel, gotItScheduleId, iso, onGotIt }) {
+  const iconPath = path.join(__dirname, "..", "assets", "icon.ico");
+  const useWindowsGotItXml =
+    Boolean(onGotIt && gotItScheduleId && iso && process.platform === "win32" && app.isPackaged);
+  const options = useWindowsGotItXml
+    ? {
+        toastXml: buildWindowsGotItToastXml({
+          title,
+          body,
+          scheduleId: gotItScheduleId,
+          iso,
+          gotItText: "Got it"
+        })
+      }
+    : {
+        title,
+        body,
+        icon: iconPath,
+        ...(onGotIt && process.platform === "darwin" ? { actions: [{ type: "button", text: "Got it" }] } : {})
+      };
+  const notice = new Notification(options);
+  notice.on("click", () => openRendererView(channel));
+  if (onGotIt) {
+    notice.on("action", () => { void onGotIt(); });
+  }
+  notice.show();
+}
+
+async function runDesktopReminders({ includeAgendaAndSchedule = true } = {}) {
+  const { iso, minutes, nowMs } = dhakaNow();
+  const canNotify = Notification.isSupported();
+  const result = evaluateDesktopReminders({
+    agendas: agendasCache,
+    schedules: schedulesCache,
+    tasks: tasksStoreCache.tasks,
+    iso,
+    minutes,
+    nowMs,
+    lang: uiLanguage,
+    notifiedKeys: notifiedToday,
+    includeAgendaAndSchedule
+  });
+
+  if (result.tasksChanged) {
+    await writeTasksToDisk({
+      tasks: result.nextTasks,
+      goals: tasksStoreCache.goals,
+      campaigns: tasksStoreCache.campaigns
+    });
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("multical:tasks-updated", tasksStoreCache);
+    }
   }
 
-  for (const agenda of agendasCache) {
-    if (!agenda || !agenda.reminder || !matchesDate(agenda, iso)) continue;
-    const key = `${agenda.id}:${iso}`;
-    if (notifiedToday.has(key)) continue;
-
-    let due = false;
-    if (agenda.isAllDay || !agenda.time) {
-      due = minutes >= 8 * 60 && minutes <= 22 * 60;
-    } else if (/^\d{2}:\d{2}$/.test(agenda.time)) {
-      const [hh, mm] = agenda.time.split(":").map(Number);
-      const targetMins = hh * 60 + mm;
-      due = minutes >= targetMins && minutes <= targetMins + 2;
-    }
-
-    if (!due) continue;
-    notifiedToday.add(key);
-
-    const body = agenda.comment && String(agenda.comment).trim()
-      ? String(agenda.comment).trim()
-      : (uiLanguage === "bn" ? "আজকের নির্ধারিত এজেন্ডা রিমাইন্ডার" : "Scheduled agenda reminder for today");
-
-    const notice = new Notification({
-      title: agenda.title || "MultiCal",
-      body,
-      icon: path.join(__dirname, "..", "assets", "icon.ico")
+  if (!canNotify) return;
+  for (const item of result.notifications) {
+    showOsNotification({
+      title: item.title,
+      body: item.body,
+      channel: item.channel,
+      gotItScheduleId: item.gotItScheduleId,
+      iso: item.iso,
+      onGotIt: item.gotItScheduleId
+        ? () => markScheduleDoneFromNotification(item.gotItScheduleId, item.iso || iso)
+        : undefined
     });
-    notice.on("click", () => openMyAgendaWindow());
-    notice.show();
   }
 }
 
@@ -120,15 +196,15 @@ function focusMainWindow() {
   mainWindow.focus();
 }
 
-function openMyAgendaWindow() {
+function openRendererView(channel) {
   focusMainWindow();
   if (mainWindow && !mainWindow.isDestroyed()) {
     if (mainWindow.webContents.isLoading()) {
       mainWindow.webContents.once("did-finish-load", () => {
-        mainWindow.webContents.send("multical:open-my-agenda");
+        mainWindow.webContents.send(channel);
       });
     } else {
-      mainWindow.webContents.send("multical:open-my-agenda");
+      mainWindow.webContents.send(channel);
     }
   }
 }
@@ -141,10 +217,19 @@ function setupTray() {
     tray.setToolTip("MultiCal");
     tray.setContextMenu(Menu.buildFromTemplate([
       { label: "Open MultiCal", click: () => focusMainWindow() },
-      { label: "My Agenda", click: () => openMyAgendaWindow() },
+      { label: "My Agenda", click: () => openRendererView("multical:open-my-agenda") },
+      { label: "Schedule", click: () => openRendererView("multical:open-schedule") },
+      { label: "Live Task", click: () => openRendererView("multical:open-live-task") },
       { type: "separator" },
-      { label: "Quit", click: () => app.quit() }
+      {
+        label: "Quit",
+        click: () => {
+          isQuitting = true;
+          app.quit();
+        }
+      }
     ]));
+    tray.on("click", () => focusMainWindow());
     tray.on("double-click", () => focusMainWindow());
   } catch {
     /* tray optional across environments */
@@ -181,6 +266,12 @@ function createWindow() {
 
   mainWindow = window;
   window.once("ready-to-show", () => window.show());
+  window.on("close", event => {
+    if (!isQuitting && tray) {
+      event.preventDefault();
+      window.hide();
+    }
+  });
   window.on("closed", () => {
     if (mainWindow === window) mainWindow = null;
   });
@@ -205,8 +296,34 @@ function createWindow() {
   return window;
 }
 
+app.on("before-quit", () => {
+  isQuitting = true;
+});
+
+app.on("second-instance", (_event, commandLine) => {
+  const protocolArg = Array.isArray(commandLine)
+    ? commandLine.find(arg => typeof arg === "string" && arg.startsWith("multical://"))
+    : null;
+  if (protocolArg) {
+    const gotIt = parseGotItProtocolUrl(protocolArg);
+    if (gotIt) {
+      void markScheduleDoneFromNotification(gotIt.scheduleId, gotIt.iso);
+      return;
+    }
+    if (protocolArg.startsWith("multical://open-schedule")) {
+      openRendererView("multical:open-schedule");
+      return;
+    }
+  }
+  focusMainWindow();
+});
+
 app.whenReady().then(async () => {
+  if (!gotSingleInstanceLock) return;
+
   agendasCache = await readAgendasFromDisk();
+  schedulesCache = await readSchedulesFromDisk();
+  tasksStoreCache = await readTasksFromDisk();
 
   ipcMain.handle("multical:agendas:load", async () => {
     agendasCache = await readAgendasFromDisk();
@@ -214,7 +331,25 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle("multical:agendas:save", async (_event, list) => {
     await writeAgendasToDisk(list);
-    checkAgendaReminders();
+    void runDesktopReminders();
+    return true;
+  });
+  ipcMain.handle("multical:schedules:load", async () => {
+    schedulesCache = await readSchedulesFromDisk();
+    return schedulesCache;
+  });
+  ipcMain.handle("multical:schedules:save", async (_event, list) => {
+    await writeSchedulesToDisk(list);
+    void runDesktopReminders();
+    return true;
+  });
+  ipcMain.handle("multical:tasks:load", async () => {
+    tasksStoreCache = await readTasksFromDisk();
+    return tasksStoreCache;
+  });
+  ipcMain.handle("multical:tasks:save", async (_event, payload) => {
+    await writeTasksToDisk(payload);
+    void runDesktopReminders();
     return true;
   });
   ipcMain.on("multical:language", (_event, lang) => {
@@ -223,14 +358,21 @@ app.whenReady().then(async () => {
 
   createWindow();
   setupTray();
-  checkAgendaReminders();
-  setInterval(checkAgendaReminders, 30_000);
+  void runDesktopReminders();
+  setInterval(() => { void runDesktopReminders(); }, 15_000);
+  setInterval(() => {
+    if (tasksStoreCache.tasks.some(t => t && t.status === "running") || schedulesCache.some(s => s && s.campaignId)) {
+      void runDesktopReminders({ includeAgendaAndSchedule: false });
+    }
+  }, 5_000);
 
   app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    focusMainWindow();
   });
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  if (isQuitting || !tray) {
+    if (process.platform !== "darwin") app.quit();
+  }
 });

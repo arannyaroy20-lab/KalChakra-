@@ -7,9 +7,56 @@ import { copy, ENGINES, monthNames, ui, weekdays } from "./i18n.js";
 import { chipClass, eventTitle, holidayLabel, holidayTier, Icon, monthSpans, numFor, shortDate, sortEvents, todayIso, type DayEvent, type IconName, type MonthSpan } from "./shared.js";
 import { formatAgendaTime, getAgendaType, loadAgendas, resolveAgendaComment, resolveHeroAgendas, saveAgendas, type PersonalAgenda } from "./agendas.js";
 import { MyAgendaView } from "./MyAgendaView.js";
+import {
+  formatScheduleRange,
+  getScheduleStatus,
+  getScheduleTickMinutesLeft,
+  getScheduleType,
+  getSegmentProgressPct,
+  loadSchedules,
+  resolveActiveHomeSchedule,
+  resolveScheduleComment,
+  saveSchedules,
+  scheduleMatchesDate,
+  sortSchedulesChronologically,
+  toggleScheduleDone,
+  type PersonalSchedule
+} from "./schedules.js";
+import { ScheduleView } from "./ScheduleView.js";
+import {
+  completeRunningTask,
+  computeDailyTaskScore,
+  formatCountdownMs,
+  formatDeadlineClock,
+  formatTaskDuration,
+  getRunningLiveTask,
+  getTaskType,
+  loadCampaigns,
+  loadTaskGoals,
+  loadTasks,
+  reconcileExpiredTasks,
+  resolveTaskComment,
+  saveCampaigns,
+  saveTaskGoals,
+  saveTasks,
+  startLiveTask,
+  syncCampaignSchedulesToTasks,
+  type Campaign,
+  type DailyTaskGoals,
+  type LiveTask
+} from "./tasks.js";
+import {
+  collectWebReminders,
+  dispatchWebNotifications,
+  requestWebNotificationPermission
+} from "./notifications.js";
+import { LiveTaskView } from "./LiveTaskView.js";
 import "./styles.css";
 
-type View = "home" | "calendar" | "all" | "agenda" | "my-agenda";
+const webNotifiedKeys = new Set<string>();
+let prevWebTasks: LiveTask[] = [];
+
+type View = "home" | "calendar" | "all" | "agenda" | "my-agenda" | "schedule" | "live-task";
 type Theme = "light" | "dark";
 type Accent = "mint" | "green" | "blue" | "clay" | "purple" | "red";
 const ACCENTS: { id: Accent; color: string }[] = [{ id: "mint", color: "#17866d" }, { id: "green", color: "#1f5b4a" }, { id: "blue", color: "#2f6fb0" }, { id: "clay", color: "#c4623f" }, { id: "purple", color: "#6b4fb5" }, { id: "red", color: "#c23a3a" }];
@@ -82,13 +129,20 @@ function App() {
   const [hinduMode, setHinduMode] = useState<HinduCalendarMode>(initialHinduMode);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [agendas, setAgendas] = useState<PersonalAgenda[]>(loadAgendas);
+  const [schedules, setSchedules] = useState<PersonalSchedule[]>(loadSchedules);
+  const [tasks, setTasks] = useState<LiveTask[]>(() => reconcileExpiredTasks(loadTasks(), Date.now()));
+  const [taskGoals, setTaskGoals] = useState<DailyTaskGoals>(loadTaskGoals);
+  const [campaigns, setCampaigns] = useState<Campaign[]>(loadCampaigns);
+  const [nowMs, setNowMs] = useState<number>(() => Date.now());
   const [desktopReady, setDesktopReady] = useState<boolean>(() => !window.multiCalDesktop?.isDesktop);
-  const [nowMinutes, setNowMinutes] = useState<number>(() => {
-    const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
+  const [exactNowMinutes, setExactNowMinutes] = useState<number>(() => {
+    const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
     const hh = Number(parts.find(p => p.type === "hour")?.value ?? 0);
     const mm = Number(parts.find(p => p.type === "minute")?.value ?? 0);
-    return hh * 60 + mm;
+    const ss = Number(parts.find(p => p.type === "second")?.value ?? 0);
+    return hh * 60 + mm + ss / 60;
   });
+  const nowMinutes = Math.floor(exactNowMinutes);
   const t = copy[language];
   const u = ui[language];
   const num = numFor(language);
@@ -128,7 +182,7 @@ function App() {
 
   // All-engines month (All engines + Agenda + Home views): every engine's data computed locally, off the render path.
   useEffect(() => {
-    if (view === "calendar" || view === "my-agenda") return;
+    if (view === "calendar" || view === "my-agenda" || view === "schedule" || view === "live-task") return;
     let active = true;
     setAllLoading(true); setError(null);
     const handle = setTimeout(() => {
@@ -156,13 +210,38 @@ function App() {
     const desktop = window.multiCalDesktop;
     if (!desktop?.isDesktop) return;
     let active = true;
-    desktop.loadAgendas().then(diskList => {
+    Promise.all([
+      desktop.loadAgendas(),
+      desktop.loadSchedules ? desktop.loadSchedules() : Promise.resolve([]),
+      desktop.loadTasks ? desktop.loadTasks() : Promise.resolve({ tasks: [] as unknown[], goals: {} as DailyTaskGoals, campaigns: [] as unknown[] })
+    ]).then(([diskAgendas, diskSchedules, diskTasks]) => {
       if (!active) return;
-      if (Array.isArray(diskList) && diskList.length > 0) {
-        setAgendas(diskList);
+      if (Array.isArray(diskAgendas) && diskAgendas.length > 0) {
+        setAgendas(diskAgendas);
       } else {
         const local = loadAgendas();
         if (local.length > 0) void desktop.saveAgendas(local);
+      }
+      if (Array.isArray(diskSchedules) && diskSchedules.length > 0) {
+        setSchedules(diskSchedules as PersonalSchedule[]);
+      } else {
+        const localSch = loadSchedules();
+        if (localSch.length > 0) void desktop.saveSchedules?.(localSch);
+      }
+      const diskTaskList = Array.isArray(diskTasks?.tasks) ? (diskTasks.tasks as LiveTask[]) : [];
+      const diskGoalMap: DailyTaskGoals = diskTasks?.goals && typeof diskTasks.goals === "object" ? diskTasks.goals : {};
+      const diskCampaigns = Array.isArray(diskTasks?.campaigns) ? (diskTasks.campaigns as Campaign[]) : [];
+      if (diskTaskList.length > 0 || Object.keys(diskGoalMap).length > 0 || diskCampaigns.length > 0) {
+        setTasks(reconcileExpiredTasks(diskTaskList, Date.now()));
+        setTaskGoals(diskGoalMap);
+        setCampaigns(diskCampaigns);
+      } else {
+        const localTasks = loadTasks();
+        const localGoals = loadTaskGoals();
+        const localCampaigns = loadCampaigns();
+        if (localTasks.length > 0 || Object.keys(localGoals).length > 0 || localCampaigns.length > 0) {
+          void desktop.saveTasks?.({ tasks: localTasks, goals: localGoals, campaigns: localCampaigns });
+        }
       }
       setDesktopReady(true);
     }).catch(() => {
@@ -177,25 +256,89 @@ function App() {
     }
   }, [agendas, desktopReady]);
   useEffect(() => {
+    saveSchedules(schedules);
+    if (desktopReady && window.multiCalDesktop?.isDesktop) {
+      void window.multiCalDesktop.saveSchedules?.(schedules);
+    }
+  }, [schedules, desktopReady]);
+  useEffect(() => {
+    saveTasks(tasks);
+    saveTaskGoals(taskGoals);
+    saveCampaigns(campaigns);
+    if (desktopReady && window.multiCalDesktop?.isDesktop) {
+      void window.multiCalDesktop.saveTasks?.({ tasks, goals: taskGoals, campaigns });
+    }
+  }, [tasks, taskGoals, campaigns, desktopReady]);
+  useEffect(() => {
     window.multiCalDesktop?.setLanguage(language);
   }, [language]);
   useEffect(() => {
-    const unsubscribe = window.multiCalDesktop?.onOpenMyAgenda(() => {
+    const unsubAgenda = window.multiCalDesktop?.onOpenMyAgenda(() => {
       setViewRaw("my-agenda");
       setDrawer(false);
     });
-    return () => { unsubscribe?.(); };
+    const unsubSchedule = window.multiCalDesktop?.onOpenSchedule?.(() => {
+      setViewRaw("schedule");
+      setDrawer(false);
+    });
+    const unsubLiveTask = window.multiCalDesktop?.onOpenLiveTask?.(() => {
+      setViewRaw("live-task");
+      setDrawer(false);
+    });
+    const unsubSchSync = window.multiCalDesktop?.onSchedulesUpdated?.(list => {
+      if (Array.isArray(list)) setSchedules(list as PersonalSchedule[]);
+    });
+    const unsubTaskSync = window.multiCalDesktop?.onTasksUpdated?.(payload => {
+      if (payload && Array.isArray(payload.tasks)) {
+        setTasks(reconcileExpiredTasks(payload.tasks as LiveTask[], Date.now()));
+      }
+      if (payload?.goals && typeof payload.goals === "object") {
+        setTaskGoals(payload.goals);
+      }
+      if (Array.isArray(payload?.campaigns)) {
+        setCampaigns(payload.campaigns as Campaign[]);
+      }
+    });
+    return () => {
+      unsubAgenda?.();
+      unsubSchedule?.();
+      unsubLiveTask?.();
+      unsubSchSync?.();
+      unsubTaskSync?.();
+    };
   }, []);
   useEffect(() => {
     const tick = () => {
-      const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
+      const parts = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: "Asia/Dhaka" }).formatToParts(new Date());
       const hh = Number(parts.find(p => p.type === "hour")?.value ?? 0);
       const mm = Number(parts.find(p => p.type === "minute")?.value ?? 0);
-      setNowMinutes(hh * 60 + mm);
+      const ss = Number(parts.find(p => p.type === "second")?.value ?? 0);
+      setExactNowMinutes(hh * 60 + mm + ss / 60);
     };
-    const id = setInterval(tick, 30_000);
+    const id = setInterval(tick, 5_000);
     return () => clearInterval(id);
   }, []);
+  const hasRunningTask = tasks.some(item => item.status === "running");
+  const hasLinkedScheduleToday = schedules.some(
+    s => Boolean(s.campaignId) && scheduleMatchesDate(s, today)
+  );
+  useEffect(() => {
+    setTasks(prev => syncCampaignSchedulesToTasks(prev, schedules, today, Date.now()));
+  }, [schedules, today]);
+  useEffect(() => {
+    if (!hasRunningTask && !hasLinkedScheduleToday) return;
+    setNowMs(Date.now());
+    const intervalMs = hasRunningTask ? 1_000 : 5_000;
+    const id = setInterval(() => {
+      const now = Date.now();
+      setNowMs(now);
+      setTasks(prev => {
+        const reconciled = reconcileExpiredTasks(prev, now);
+        return syncCampaignSchedulesToTasks(reconciled, schedules, today, now);
+      });
+    }, intervalMs);
+    return () => clearInterval(id);
+  }, [hasRunningTask, hasLinkedScheduleToday, schedules, today]);
   useEffect(() => {
     if (!settingsOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSettingsOpen(false); };
@@ -269,30 +412,110 @@ function App() {
   </div>;
 
   const heroDay = view === "calendar" ? selectedDay ?? undefined : (ENGINES.map(e => allDay(e.id, day)).find(Boolean));
-  const titles: Record<View, string> = { home: u.home, calendar: u.viewCalendar, all: u.viewAll, agenda: u.viewAgenda, "my-agenda": u.myAgenda };
+  const titles: Record<View, string> = { home: u.home, calendar: u.viewCalendar, all: u.viewAll, agenda: u.viewAgenda, "my-agenda": u.myAgenda, schedule: u.mySchedule, "live-task": u.liveTask };
   const hour = Math.floor(nowMinutes / 60);
-  const timeGreeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean } =
+  const timeGreeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean; isDone?: boolean } =
     hour >= 5 && hour < 12 ? { icon: "sunrise", title: u.gMorning, note: u.cMorning }
     : hour >= 12 && hour < 16 ? { icon: "sun", title: u.gNoon, note: u.cNoon }
     : hour >= 16 && hour < 18 ? { icon: "afternoon", title: u.gAfternoon, note: u.cAfternoon }
     : hour >= 18 && hour < 20 ? { icon: "sunset", title: u.gEvening, note: u.cEvening }
     : { icon: "night", title: u.gNight, note: u.cNight };
+  const todaySchedules = useMemo(
+    () => sortSchedulesChronologically(schedules.filter(item => scheduleMatchesDate(item, today))),
+    [schedules, today]
+  );
+  const activeHomeSchedule = useMemo(
+    () => resolveActiveHomeSchedule(schedules, today, nowMinutes),
+    [schedules, today, nowMinutes]
+  );
   const heroAgenda = useMemo(() => resolveHeroAgendas(agendas, today, nowMinutes), [agendas, today, nowMinutes]);
-  const greeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean } = heroAgenda.main
+  const homeAgendas = useMemo(() => {
+    if (activeHomeSchedule) {
+      return heroAgenda.main ? [heroAgenda.main, ...heroAgenda.remaining] : heroAgenda.remaining;
+    }
+    return heroAgenda.remaining;
+  }, [activeHomeSchedule, heroAgenda]);
+  const activeLiveTask = useMemo(() => getRunningLiveTask(tasks, nowMs), [tasks, nowMs]);
+  const activeLiveCampaign = activeLiveTask?.campaignId
+    ? campaigns.find(c => c.id === activeLiveTask.campaignId) ?? null
+    : null;
+  const todayTaskScore = useMemo(() => computeDailyTaskScore(tasks, taskGoals, today), [tasks, taskGoals, today]);
+  useEffect(() => {
+    if (window.multiCalDesktop?.isDesktop) {
+      prevWebTasks = tasks;
+      return;
+    }
+    const notices = collectWebReminders({
+      agendas,
+      schedules,
+      tasks,
+      prevTasks: prevWebTasks,
+      iso: today,
+      minutes: nowMinutes,
+      nowMs,
+      language,
+      notifiedKeys: webNotifiedKeys
+    });
+    prevWebTasks = tasks;
+    if (notices.length > 0) {
+      dispatchWebNotifications(notices, targetView => setViewRaw(targetView));
+    }
+  }, [agendas, schedules, tasks, today, nowMinutes, nowMs, language]);
+  const handleStartLiveTask = (taskId: string) => {
+    const now = Date.now();
+    setNowMs(now);
+    setTasks(prev => startLiveTask(prev, taskId, today, now));
+    requestWebNotificationPermission();
+  };
+  const handleCompleteLiveTask = (taskId: string) => {
+    const now = Date.now();
+    setNowMs(now);
+    const target = tasks.find(t => t.id === taskId);
+    setTasks(prev => completeRunningTask(prev, taskId, now));
+    if (target?.sourceScheduleId) {
+      setSchedules(prev => toggleScheduleDone(prev, target.sourceScheduleId!, target.date));
+    }
+  };
+  const handleMarkScheduleDone = (scheduleId: string, targetIso: string) => {
+    const now = Date.now();
+    setSchedules(prev => toggleScheduleDone(prev, scheduleId, targetIso));
+    const occurrenceId = `sch-live:${scheduleId}:${targetIso}`;
+    setTasks(prev => completeRunningTask(prev, occurrenceId, now));
+  };
+  const handleDetachScheduleCampaign = (scheduleId: string) => {
+    setSchedules(prev => prev.map(s => {
+      if (s.id !== scheduleId) return s;
+      const rest = { ...s };
+      delete rest.campaignId;
+      return rest;
+    }));
+  };
+  const greeting: { icon: IconName; title: string; note: string; subMeta?: string; hasReminder?: boolean; isDone?: boolean } = activeHomeSchedule
     ? {
-        icon: getAgendaType(heroAgenda.main.type).icon,
-        title: heroAgenda.main.title,
-        note: resolveAgendaComment(heroAgenda.main, language),
-        ...(!heroAgenda.main.isAllDay ? { subMeta: formatAgendaTime(heroAgenda.main, language) } : {}),
-        hasReminder: heroAgenda.main.reminder
+        icon: getScheduleType(activeHomeSchedule.type).icon,
+        title: activeHomeSchedule.title,
+        note: resolveScheduleComment(activeHomeSchedule, language),
+        subMeta: formatScheduleRange(activeHomeSchedule.startMinutes, activeHomeSchedule.endMinutes, language),
+        hasReminder: activeHomeSchedule.reminder,
+        isDone: Boolean(activeHomeSchedule.completedDates?.includes(today))
       }
-    : timeGreeting;
+    : heroAgenda.main
+      ? {
+          icon: getAgendaType(heroAgenda.main.type).icon,
+          title: heroAgenda.main.title,
+          note: resolveAgendaComment(heroAgenda.main, language),
+          ...(!heroAgenda.main.isAllDay ? { subMeta: formatAgendaTime(heroAgenda.main, language) } : {}),
+          hasReminder: heroAgenda.main.reminder
+        }
+      : timeGreeting;
   const navItems: { id: View; label: string; icon: IconName }[] = [
     { id: "home", label: u.home, icon: "home" },
     { id: "calendar", label: u.viewCalendar, icon: "cal" },
     { id: "all", label: u.viewAll, icon: "layers" },
     { id: "agenda", label: u.viewAgenda, icon: "list" },
-    { id: "my-agenda", label: u.myAgenda, icon: "agendaBook" }
+    { id: "my-agenda", label: u.myAgenda, icon: "agendaBook" },
+    { id: "schedule", label: u.mySchedule, icon: "clock" },
+    { id: "live-task", label: u.liveTask, icon: "target" }
   ];
   const pickCalendar = (id: CalendarId) => { setCalendarId(id); setViewRaw("calendar"); setDrawer(false); };
 
@@ -385,38 +608,151 @@ function App() {
       </header>
 
       {view === "home" && <main className="home">
-        <section className="home-hero">
-          <div className="hero-top">
-            <div className="hero-main">
-              {heroDay ? <>
-                <h1 className="hero-date"><span className="hero-day">{num(day)}</span><span className="hero-rest"><b>{heroDay.gregorian.weekday[language]}</b>{monthNames[language][month - 1]} {num(year)}</span></h1>
-                <div className="hero-dates">
-                  {(["bd-bengali", "india-bengali"] as const).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`date-chip eng-${id}`} title={engineShort(id, language, hinduMode)}><i className="eng-dot" /><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
+        {activeLiveTask && activeLiveTask.deadlineAtMs ? (() => {
+          const remainingMs = Math.max(0, activeLiveTask.deadlineAtMs - nowMs);
+          const totalMs = activeLiveTask.durationMinutes * 60_000;
+          const progressPct = Math.max(0, Math.min(100, ((totalMs - remainingMs) / totalMs) * 100));
+          const typeMeta = getTaskType(activeLiveTask.type);
+          return <section className="home-hero is-live-task" aria-live="polite">
+            <div className="hero-live-grid">
+              <div className="hero-live-info">
+                <div className="hero-live-kicker">
+                  <span className="agenda-type-icon"><Icon name={typeMeta.icon} /></span>
+                  <span>
+                    {activeLiveCampaign ? `${activeLiveCampaign.title} · ` : ""}
+                    {u.liveRunningTitle} · {formatTaskDuration(activeLiveTask.durationMinutes, language)} · {u.liveEndsAt} {formatDeadlineClock(activeLiveTask.deadlineAtMs, language)}
+                  </span>
                 </div>
-              </> : <div className="loading-bar" role="status"><span />{u.calculating}</div>}
+                <h1 className="hero-live-title">{activeLiveTask.title}</h1>
+                <p className="hero-live-note">{resolveTaskComment(activeLiveTask, language)}</p>
+              </div>
+              <div className="hero-live-clock-col">
+                <div className="hero-live-countdown">{formatCountdownMs(remainingMs, language)}</div>
+                <div className="live-progress-track" aria-hidden="true">
+                  <div className="live-progress-fill" style={{ width: `${progressPct.toFixed(1)}%` }} />
+                </div>
+              </div>
             </div>
-            <div className="hero-greeting">
-              <span className="greet-icon" aria-hidden="true"><Icon name={greeting.icon} /></span>
-              <strong className="greet-title">{greeting.title}</strong>
-              <span className="greet-note">
-                {greeting.hasReminder && <span className="greet-bell" aria-label={u.agendaReminder}><Icon name="bell" /></span>}
-                {greeting.subMeta && <em className="greet-time">{greeting.subMeta} · </em>}
-                {greeting.note}
-              </span>
+            <div className="hero-actions">
+              <button type="button" className="got-it-button" onClick={() => handleCompleteLiveTask(activeLiveTask.id)}>
+                <Icon name="check" />
+                <span>{u.markDoneBtn}</span>
+              </button>
+              <button type="button" className="ghost-button" onClick={() => setView("live-task")}>
+                <Icon name="target" />
+                <span>{u.openTasksBtn}</span>
+              </button>
             </div>
-          </div>
-          <div className="hero-actions">
-            <button className="primary-button" onClick={() => setView("calendar")}><Icon name="cal" />{u.openCalendar}</button>
-            <button className="ghost-button" onClick={() => setView("all")}><Icon name="layers" />{u.seeAll}</button>
-          </div>
-        </section>
-        {heroAgenda.remaining.length > 0 && <section className="info-card home-agendas">
+          </section>;
+        })() : (
+          <section className="home-hero">
+            <div className="hero-top">
+              <div className="hero-main">
+                {heroDay ? <>
+                  <h1 className="hero-date"><span className="hero-day">{num(day)}</span><span className="hero-rest"><b>{heroDay.gregorian.weekday[language]}</b>{monthNames[language][month - 1]} {num(year)}</span></h1>
+                  <div className="hero-dates">
+                    {(["bd-bengali", "india-bengali"] as const).map(id => { const d = allDay(id, day); return d && d.nativeDateAvailable ? <div key={id} className={`date-chip eng-${id}`} title={engineShort(id, language, hinduMode)}><i className="eng-dot" /><strong>{formatSelectedCalendarDate(d, language)}</strong></div> : null; })}
+                  </div>
+                </> : <div className="loading-bar" role="status"><span />{u.calculating}</div>}
+              </div>
+              <div className="hero-greeting">
+                <span className="greet-icon" aria-hidden="true"><Icon name={greeting.icon} /></span>
+                <strong className="greet-title">{greeting.title}</strong>
+                <span className="greet-note">
+                  {greeting.isDone && <span className="greet-done-tick" aria-label={u.statusDone}><Icon name="checkCircle" /></span>}
+                  {greeting.hasReminder && <span className="greet-bell" aria-label={u.agendaReminder}><Icon name="bell" /></span>}
+                  {greeting.subMeta && <em className="greet-time">{greeting.subMeta} · </em>}
+                  {greeting.note}
+                </span>
+              </div>
+            </div>
+            <div className="hero-actions">
+              <button className="primary-button" onClick={() => setView("calendar")}><Icon name="cal" />{u.openCalendar}</button>
+              <button className="ghost-button" onClick={() => setView("all")}><Icon name="layers" />{u.seeAll}</button>
+            </div>
+          </section>
+        )}
+        {todayTaskScore.totalCount > 0 && (() => {
+          const scoreTone = todayTaskScore.scorePct >= 100 ? "good" : todayTaskScore.scorePct >= 50 ? "mid" : "low";
+          return <section className="info-card home-score-card">
+            <div className="score-focus-col">
+              <strong className={`home-big-score ${scoreTone}`}>{num(todayTaskScore.scorePct)}%</strong>
+              <span className="score-focus-label">{u.todayScoreTitle}</span>
+            </div>
+            <div className="score-meter-col">
+              <div className="score-stat-line">
+                <span>{u.doneCountLabel}: <strong>{num(todayTaskScore.doneCount)}/{num(todayTaskScore.goal)}</strong></span>
+                <span>{u.upcomingCountLabel}: <strong>{num(todayTaskScore.pendingCount)}</strong></span>
+                <span className="is-failed">{u.failedCountLabel}: <strong>{num(todayTaskScore.failedCount)}</strong></span>
+              </div>
+              <div className="task-score-bar-track home-score-bar" aria-hidden="true">
+                <div className={`task-score-bar-fill ${scoreTone}`} style={{ width: `${todayTaskScore.scorePct}%` }} />
+              </div>
+            </div>
+          </section>;
+        })()}
+        {todaySchedules.length > 0 && <section className="info-card home-schedules">
           <div className="section-heading">
-            <h2>{u.moreTodayAgendas}</h2>
-            <span className="count-badge">{num(heroAgenda.remaining.length)}</span>
+            <h2>{u.todaySchedulesTitle}</h2>
+            <span className="count-badge">{num(todaySchedules.filter(s => s.completedDates?.includes(today)).length)}/{num(todaySchedules.length)}</span>
+          </div>
+          <p className="schedule-rule-note">{u.tickWindowHint}</p>
+          <div className="schedule-timeline compact">
+            {todaySchedules.map((item, idx) => {
+              const typeMeta = getScheduleType(item.type);
+              const status = getScheduleStatus(item, today, today, nowMinutes);
+              const showRail = todaySchedules.length > 1;
+              const nextItem = todaySchedules[idx + 1];
+              const hasNext = showRail && Boolean(nextItem);
+              const progressPct = nextItem
+                ? getSegmentProgressPct(item.startMinutes, nextItem.startMinutes, exactNowMinutes)
+                : 0;
+              const minutesLeft = status === "active" ? getScheduleTickMinutesLeft(item, nowMinutes) : 0;
+              return <div key={item.id} className={`schedule-row status-${status}`}>
+                {showRail && <div className="timeline-rail" aria-hidden="true">
+                  <span className={`timeline-node ${status}`}>
+                    {status === "done" && <Icon name="check" />}
+                  </span>
+                  {hasNext && <span className="timeline-track">
+                    <span className={`timeline-fill ${status}`} style={{ height: `${progressPct.toFixed(1)}%` }} />
+                    {progressPct > 0 && progressPct < 100 && <span className="timeline-cursor" style={{ top: `${progressPct.toFixed(1)}%` }} />}
+                  </span>}
+                </div>}
+                <div className="schedule-card-row">
+                  <span className="agenda-type-icon"><Icon name={typeMeta.icon} /></span>
+                  <button type="button" className="home-schedule-main" onClick={() => { setDate(today); setViewRaw("schedule"); }}>
+                    <span className="agenda-item-head">
+                      <strong>{item.title}</strong>
+                      <span className={`schedule-status-text ${status}`}>
+                        {status === "active" ? u.statusActive
+                          : status === "done" ? u.statusDone
+                          : status === "passed" ? u.statusPassed
+                          : u.statusUpcoming}
+                      </span>
+                    </span>
+                    <small>{formatScheduleRange(item.startMinutes, item.endMinutes, language)} · {resolveScheduleComment(item, language)}</small>
+                  </button>
+                  <div className="schedule-row-right">
+                    {status === "active" && <div className="schedule-tick-wrap">
+                      <button type="button" className="got-it-button" onClick={() => handleMarkScheduleDone(item.id, today)}>
+                        <Icon name="check" /><span>{u.gotItBtn}</span>
+                      </button>
+                      <span className="tick-window-label">{num(minutesLeft)} {u.minsLeftTag}</span>
+                    </div>}
+                    {status === "done" && <span className="big-green-tick" aria-label={u.statusDone}><Icon name="checkCircle" /></span>}
+                  </div>
+                </div>
+              </div>;
+            })}
+          </div>
+        </section>}
+        {homeAgendas.length > 0 && <section className="info-card home-agendas">
+          <div className="section-heading">
+            <h2>{activeHomeSchedule ? u.todayAgendasTitle : u.moreTodayAgendas}</h2>
+            <span className="count-badge">{num(homeAgendas.length)}</span>
           </div>
           <div className="home-agenda-list">
-            {heroAgenda.remaining.map(item => {
+            {homeAgendas.map(item => {
               const typeMeta = getAgendaType(item.type);
               return <button key={item.id} className="home-agenda-row" onClick={() => { setDate(today); setViewRaw("my-agenda"); }}>
                 <span className="agenda-type-icon"><Icon name={typeMeta.icon} /></span>
@@ -446,7 +782,36 @@ function App() {
 
       {view === "my-agenda" && <MyAgendaView agendas={agendas} onChange={setAgendas} date={date} onSelectDate={setDate} language={language} />}
 
-      {view !== "home" && view !== "my-agenda" && <main className="main-layout">
+      {view === "schedule" && <ScheduleView
+        schedules={schedules}
+        campaigns={campaigns}
+        onChange={setSchedules}
+        onMarkDone={handleMarkScheduleDone}
+        date={date}
+        onSelectDate={setDate}
+        exactNowMinutes={exactNowMinutes}
+        language={language}
+      />}
+
+      {view === "live-task" && <LiveTaskView
+        tasks={tasks}
+        goals={taskGoals}
+        campaigns={campaigns}
+        schedules={schedules}
+        onChangeTasks={setTasks}
+        onChangeGoals={setTaskGoals}
+        onChangeCampaigns={setCampaigns}
+        onDetachScheduleCampaign={handleDetachScheduleCampaign}
+        onStartTask={handleStartLiveTask}
+        onCompleteTask={handleCompleteLiveTask}
+        date={date}
+        onSelectDate={setDate}
+        nowMs={nowMs}
+        exactNowMinutes={exactNowMinutes}
+        language={language}
+      />}
+
+      {view !== "home" && view !== "my-agenda" && view !== "schedule" && view !== "live-task" && <main className="main-layout">
         <section className="primary-column">
           <div className="calendar-card">
             <div className="calendar-heading">

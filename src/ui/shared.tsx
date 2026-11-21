@@ -3,7 +3,7 @@ import type { DisplayLanguage } from "../integration/types.js";
 import { ui } from "./i18n.js";
 
 export type DayEvent = UserCalendarDay["events"][number];
-export type IconName = "left" | "right" | "sunrise" | "sunset" | "afternoon" | "night" | "moon" | "star" | "yoga" | "karana" | "sun" | "moonTheme" | "check" | "alert" | "external" | "cal" | "layers" | "grid" | "list" | "flag" | "om" | "home" | "sidebar" | "menu" | "close" | "sparkle" | "settings" | "agendaBook" | "heart" | "cake" | "book" | "compass" | "party" | "briefcase" | "pulse" | "prayer" | "users" | "bell" | "plus" | "trash" | "edit" | "grip" | "up" | "down" | "clock" | "repeat";
+export type IconName = "left" | "right" | "sunrise" | "sunset" | "afternoon" | "night" | "moon" | "star" | "yoga" | "karana" | "sun" | "moonTheme" | "check" | "checkCircle" | "xCircle" | "alert" | "external" | "cal" | "layers" | "grid" | "list" | "flag" | "om" | "home" | "sidebar" | "menu" | "close" | "sparkle" | "settings" | "agendaBook" | "heart" | "cake" | "book" | "compass" | "party" | "briefcase" | "pulse" | "prayer" | "users" | "bell" | "plus" | "trash" | "edit" | "grip" | "up" | "down" | "clock" | "repeat" | "music" | "meal" | "lock" | "play" | "target" | "trophy" | "flame" | "shield";
 
 export const todayIso = () => {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dhaka", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
@@ -64,6 +64,8 @@ export const Icon = ({ name }: { name: IconName }) => {
     case "sun": return <svg {...p}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>;
     case "moonTheme": return <svg {...p}><path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5Z" /></svg>;
     case "check": return <svg {...p}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>;
+    case "checkCircle": return <svg {...p}><circle cx="12" cy="12" r="9" /><path d="m8.5 12.3 2.5 2.5 4.8-5.3" /></svg>;
+    case "xCircle": return <svg {...p}><circle cx="12" cy="12" r="9" /><path d="m9.5 9.5 5 5M14.5 9.5l-5 5" /></svg>;
     case "alert": return <svg {...p}><path d="M12 8v5M12 16.5v.01M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>;
     case "external": return <svg {...p}><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>;
     case "cal": return <svg {...p}><rect x="3.5" y="5" width="17" height="15.5" rx="3" /><path d="M8 3v4M16 3v4M3.5 10h17" /></svg>;
@@ -97,5 +99,13 @@ export const Icon = ({ name }: { name: IconName }) => {
     case "down": return <svg {...p}><path d="m6 9 6 6 6-6" /></svg>;
     case "clock": return <svg {...p}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></svg>;
     case "repeat": return <svg {...p}><path d="M17 3l3 3-3 3M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3M20 13v2a3 3 0 0 1-3 3H4" /></svg>;
+    case "music": return <svg {...p}><path d="M9 18V5l10-2v13" /><circle cx="6.5" cy="18" r="2.5" /><circle cx="16.5" cy="16" r="2.5" /></svg>;
+    case "meal": return <svg {...p}><path d="M5 4v7a3 3 0 0 0 6 0V4M8 4v16M17 4v16M17 4c2.2 0 3.5 2 3.5 4.5S19.2 13 17 13" /></svg>;
+    case "lock": return <svg {...p}><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 1 1 8 0v4" /></svg>;
+    case "play": return <svg {...p}><path d="m7 5 12 7-12 7V5Z" /></svg>;
+    case "target": return <svg {...p}><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1.2" /></svg>;
+    case "trophy": return <svg {...p}><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" /><path d="M8 6H5a1.5 1.5 0 0 0-1.5 1.5v1A3.5 3.5 0 0 0 7 12h1M16 6h3a1.5 1.5 0 0 1 1.5 1.5v1A3.5 3.5 0 0 1 17 12h-1M12 13v5M8.5 21h7" /></svg>;
+    case "flame": return <svg {...p}><path d="M12 3c2.5 3.2 5.5 5.4 5.5 10a5.5 5.5 0 1 1-11 0c0-2.5 1.1-4.5 2.4-6.1.4 1.6 1.5 2.4 2.4 2.4C11.1 7.3 11.4 5 12 3Z" /></svg>;
+    case "shield": return <svg {...p}><path d="M12 3 5 6v6c0 4.5 3 7.8 7 9 4-1.2 7-4.5 7-9V6l-7-3Z" /><path d="m9.5 12 1.8 1.8L15 10" /></svg>;
   }
 };
